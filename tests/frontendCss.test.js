@@ -31,9 +31,23 @@ const CAMINHO_CSS = path.join( __dirname, '..', 'html-visual-editor', 'assets', 
  * quebraria os outlines de seleção e o modo de edição.
  */
 const SELETORES_FORA_DO_ROOT = [
+	// Paleta de escopo global: o SelectionManager aplica os outlines de
+	// seleção nos elementos da página, fora do container do editor.
+	':root',
 	'body.hve-editing',
 	'body.hve-editing [data-hve-editable-root]',
 	'body.hve-editing .hve-text-editing',
+];
+
+/**
+ * Variáveis consumidas por elementos que vivem fora do `#hve-root`. Se
+ * voltarem a ser declaradas só no container do editor, o `var()` fica
+ * inválido nesses elementos e os outlines somem sem erro nenhum.
+ */
+const VARIAVEIS_DE_ESCOPO_GLOBAL = [
+	'--hve-color-outline-hover',
+	'--hve-color-outline-selected',
+	'--hve-color-editable-hint',
 ];
 
 /**
@@ -67,6 +81,28 @@ describe( 'frontend.css — ancoragem em #hve-root', () => {
 
 		SELETORES_FORA_DO_ROOT.forEach( ( esperado ) => {
 			expect( seletores ).toContain( esperado );
+		} );
+	} );
+} );
+
+describe( 'frontend.css — variáveis usadas fora do #hve-root', () => {
+	test( 'os outlines de seleção são declarados em :root, não só em #hve-root', () => {
+		const regraRoot = carregarRegras().find( ( r ) => r.selectorText === ':root' );
+
+		expect( regraRoot ).toBeDefined();
+
+		VARIAVEIS_DE_ESCOPO_GLOBAL.forEach( ( variavel ) => {
+			expect( regraRoot.style.getPropertyValue( variavel ).trim() ).not.toBe( '' );
+		} );
+	} );
+
+	test( 'essas variáveis NÃO são declaradas apenas dentro de #hve-root', () => {
+		// Regressão da 1.1.1: declaradas só em #hve-root, o var() era
+		// inválido nos elementos da página e o outline nunca renderizava.
+		const regraHveRoot = carregarRegras().find( ( r ) => r.selectorText === '#hve-root' );
+
+		VARIAVEIS_DE_ESCOPO_GLOBAL.forEach( ( variavel ) => {
+			expect( regraHveRoot.style.getPropertyValue( variavel ).trim() ).toBe( '' );
 		} );
 	} );
 } );

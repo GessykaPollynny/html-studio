@@ -3,7 +3,7 @@
  * Plugin Name:       HTML Visual Editor
  * Plugin URI:        https://example.com/html-visual-editor
  * Description:       Editor visual para conteúdos inseridos no Widget HTML do Elementor. Edite textos, imagens, botões e estilos sem tocar em código.
- * Version:           1.1.1
+ * Version:           1.1.2
  * Requires at least: 6.0
  * Requires PHP:      8.0
  * Author:            Sua Empresa
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Alimenta o `?ver=` dos assets enfileirados. Subir esta constante a cada
 // release é o que faz os navegadores rebaixarem CSS/JS já em cache — sem
 // isso, uma atualização de arquivo não chega a quem já visitou a página.
-define( 'HVE_VERSION', '1.1.1' );
+define( 'HVE_VERSION', '1.1.2' );
 define( 'HVE_PLUGIN_FILE', __FILE__ );
 define( 'HVE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'HVE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
