@@ -106,10 +106,15 @@ Corrigido nos componentes novos ancorando os seletores em `#hve-root`
 (seletor de ID), o que foi **validado ao vivo**: o fundo passou a
 `rgb(220,38,38)` com texto branco.
 
-**Atenção — o mesmo problema afeta o resto da UI** (toolbar, painel,
-abas), que continua herdando cores do tema. Não é quebra funcional, mas
-faz o editor mudar de aparência conforme o tema do site. Correção
-pendente: ancorar todo o `frontend.css` em `#hve-root`.
+**Corrigido em todo o `frontend.css`**: as 57 regras da UI (toolbar,
+breadcrumb, painel, abas, campos, RTE, previews) passaram a ser ancoradas
+em `#hve-root`. Três regras foram deliberadamente **mantidas sem âncora**
+porque miram o conteúdo da página, fora do container do editor:
+`body.hve-editing`, `body.hve-editing [data-hve-editable-root]` e
+`body.hve-editing .hve-text-editing` — ancorá-las quebraria os outlines de
+seleção e o modo de edição. A containment de cada componente foi conferida
+no DOM ao vivo antes da mudança, e o resultado validado com jsdom: 85
+regras parseadas, 78 ancoradas, 3 fora (exatamente as esperadas).
 
 Lacunas **ainda abertas** do escopo original:
 
