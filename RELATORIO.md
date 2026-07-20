@@ -71,6 +71,60 @@ completo, aba nova sem cache de estado):
    atributo `data-hve-style-id` já existente no DOM em vez de sempre cunhar um
    novo id.
 
+## 3.1 Auditoria do escopo original (20/07/2026)
+
+Conferência item a item do briefing original contra o código: **~95%
+implementado**. Estavam presentes e verificados no código: estrutura de
+pastas, arquitetura (PHP 8+/namespace/ES6 modules/CSS puro/sem jQuery),
+as 5 abas completas (Conteúdo, Imagens com preview, as 20 propriedades de
+Estilo, as 8 ações de Layout incl. agrupar/desagrupar, Responsivo), os 7
+comandos do rich text próprio, undo/redo, salvamento real, as 25 tags
+suportadas, performance (MutationObserver + event delegation + cache) e
+segurança.
+
+Lacunas encontradas e **já fechadas** nesta data:
+
+- **Modal de confirmação** (`ConfirmDialog.js`) — o "Excluir" da aba Layout
+  apagava o elemento sem perguntar. Agora toda exclusão passa por
+  confirmação explícita, com o foco iniciando em "Cancelar" e Esc/clique no
+  fundo cancelando. Coberto por testes, inclusive a garantia negativa (não
+  confirmar ⇒ elemento permanece no DOM).
+- **Sistema de notificações** (`Notifications.js`) — antes o único feedback
+  era o texto do botão Salvar. Agora há toasts de sucesso/erro, acessíveis
+  (`aria-live`), com dark mode e respeito a `prefers-reduced-motion`.
+
+### Achado do teste ao vivo: CSS do tema vaza para a UI do editor
+
+Ao testar o modal em `quantimob.usuart.com`, o botão destrutivo apareceu
+**sem a cor de perigo**: fundo transparente e texto na cor do tema
+(`rgb(204,51,102)`) em vez do vermelho. Causa: as regras do plugin usam
+apenas uma classe (`.hve-...`), e as regras do tema/Elementor para
+`button` vencem por especificidade. `#hve-root { all: initial }` reseta
+somente o container, não os descendentes.
+
+Corrigido nos componentes novos ancorando os seletores em `#hve-root`
+(seletor de ID), o que foi **validado ao vivo**: o fundo passou a
+`rgb(220,38,38)` com texto branco.
+
+**Corrigido em todo o `frontend.css`**: as 57 regras da UI (toolbar,
+breadcrumb, painel, abas, campos, RTE, previews) passaram a ser ancoradas
+em `#hve-root`. Três regras foram deliberadamente **mantidas sem âncora**
+porque miram o conteúdo da página, fora do container do editor:
+`body.hve-editing`, `body.hve-editing [data-hve-editable-root]` e
+`body.hve-editing .hve-text-editing` — ancorá-las quebraria os outlines de
+seleção e o modo de edição. A containment de cada componente foi conferida
+no DOM ao vivo antes da mudança, e o resultado validado com jsdom: 85
+regras parseadas, 78 ancoradas, 3 fora (exatamente as esperadas).
+
+Lacunas **ainda abertas** do escopo original:
+
+- **Nomes de módulos divergentes do briefing**: pedido `ResponsiveManager`
+  (existe `ResponsiveState.js`, que cumpre a função) e `Renderer` (não
+  existe; as responsabilidades estão em `Panel.js` + `FieldBuilder.js`).
+  Funcional, mas foge do contrato de arquitetura especificado.
+- **Loading**: existe apenas como estado do botão Salvar ("Salvando..."),
+  sem indicador dedicado.
+
 ## 4. O que falta / pendências conhecidas
 
 - **Múltiplos Widgets HTML na mesma página** — _blindado no código
@@ -85,12 +139,33 @@ completo, aba nova sem cache de estado):
 - **Seleção de imagem já existente na Media Library** — não testada de fato
   (biblioteca do site de teste estava vazia; precisa de upload manual de ao
   menos uma imagem para completar o teste).
-- **Sem testes automatizados** (nem PHPUnit nem Jest) — toda a validação foi
-  manual/exploratória num navegador.
-- **Sem auditoria de segurança formal** — nonce, capability check
-  (`current_user_can('edit_post', ...)`) e sanitização (`wp_kses_post` /
-  `unfiltered_html`) seguem os padrões do WordPress, mas não houve revisão
-  dedicada de segurança.
+- **Testes automatizados** — _iniciados (20/07/2026)._ Base de testes JS com
+  **Jest + jsdom** na raiz do repositório (`package.json`, `jest.config.cjs`,
+  `babel.config.cjs`, `tests/`), fora da pasta do plugin para não ir no
+  build. `npm test` roda 9 testes cobrindo o coração do salvamento no
+  frontend: `resolveElementId` (a correção de múltiplos widgets, incl. o
+  caso de dois ids distintos sem colisão), `stripEditingArtifacts`,
+  `collectStyleIds` e `buildSavableHtml`. **Ainda falta:** PHPUnit para o
+  backend (`RestSaveController::apply_to_elements`, `HtmlWidgetDetector`) —
+  não montado aqui porque a máquina de desenvolvimento atual não tem PHP
+  instalado; roda em CI ou em ambiente com PHP.
+- **Auditoria de segurança** — _feita (20/07/2026)._ Revisão dedicada das
+  superfícies sensíveis: endpoint REST `/save` (nonce `X-WP-Nonce` validado
+  pelo core, `permission_callback` com `current_user_can('edit_post')`,
+  `postId` via `absint`, casts explícitos), sanitização do HTML salvo
+  (`wp_kses_post` para quem não tem `unfiltered_html`), carregamento de
+  assets gated por `EditableContext`, SQL do `uninstall.php` com
+  `$wpdb->prepare`, saída no admin com `esc_html__`, e sinks de `innerHTML`
+  no JS. **Nenhuma vulnerabilidade encontrada.** Aplicada uma limpeza:
+  removidos `ajaxUrl` e o nonce `hve_editor_action` do `wp_localize_script`
+  (`frontend/AssetManager.php`) por serem código morto (sem handler
+  admin-ajax e sem uso no JS). Riscos aceitos por design, registrados aqui:
+  (a) usuários com `unfiltered_html` podem salvar HTML bruto — intencional e
+  idêntico ao próprio Widget HTML do Elementor; (b) o "Editar HTML interno"
+  (`ContentTab.js`) é um caso de self-XSS (só afeta a sessão de quem edita o
+  próprio conteúdo), com a sanitização no servidor como rede de proteção
+  real. Observação: não substitui um pentest formal, mas cobre as
+  superfícies relevantes de um plugin WordPress.
 - **Compatibilidade não testada** com Elementor Pro, outros temas, ou o
   "editor atômico" (containers novos) do Elementor v4 além do Widget HTML
   clássico.

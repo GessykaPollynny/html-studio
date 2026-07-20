@@ -94,10 +94,8 @@ final class AssetManager {
 			self::HANDLE_SCRIPT,
 			'hveData',
 			array(
-				'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
 				'restUrl'   => esc_url_raw( rest_url( 'hve/v1' ) ),
 				'restNonce' => wp_create_nonce( 'wp_rest' ),
-				'nonce'     => wp_create_nonce( 'hve_editor_action' ),
 				'postId'    => get_queried_object_id(),
 				'i18n'      => array(
 					'editHtml'     => __( 'Editar HTML', 'html-visual-editor' ),

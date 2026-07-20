@@ -6,6 +6,25 @@
  * Nenhum estilo aqui interfere no layout da página do site.
  */
 
+/**
+ * Variáveis que precisam existir FORA do `#hve-root`.
+ *
+ * O SelectionManager aplica os outlines de seleção como estilo inline
+ * diretamente nos elementos da página do site — que vivem fora do
+ * container do editor. Enquanto estas variáveis ficaram apenas em
+ * `#hve-root`, o `var()` era inválido nesses elementos e o outline
+ * simplesmente não renderizava (`outline-style: none`): o realce azul de
+ * hover e o verde de seleção nunca apareceram, até a versão 1.1.2.
+ *
+ * Ficam em `:root` para alcançar a página inteira; o `#hve-root` também as
+ * herda normalmente, pois `all: initial` não afeta custom properties.
+ */
+:root {
+	--hve-color-outline-hover: #3b82f6;
+	--hve-color-outline-selected: #22c55e;
+	--hve-color-editable-hint: #e2e4e8;
+}
+
 #hve-root {
 	--hve-color-bg: #ffffff;
 	--hve-color-bg-alt: #f5f6f8;
@@ -16,8 +35,6 @@
 	--hve-color-primary-hover: #4338ca;
 	--hve-color-success: #16a34a;
 	--hve-color-danger: #dc2626;
-	--hve-color-outline-hover: #3b82f6;
-	--hve-color-outline-selected: #22c55e;
 	--hve-shadow-panel: 0 10px 30px rgba( 0, 0, 0, 0.15 );
 	--hve-radius: 8px;
 	--hve-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -44,8 +61,23 @@
 	box-sizing: border-box;
 }
 
+/**
+ * O atributo `hidden` precisa vencer o `display` declarado por cada
+ * componente (o painel é `display: flex`, os botões da toolbar são
+ * `inline-flex`). Sem esta regra o plugin ficaria dependendo do
+ * `[hidden] { display: none }` do reset do tema — o que funcionava por
+ * acidente, e deixou de funcionar quando os seletores do editor passaram
+ * a ser ancorados em `#hve-root` e ganharam especificidade maior.
+ *
+ * O `!important` é intencional e segue o padrão do HTML5 Boilerplate:
+ * trata-se de um utilitário de estado, que deve vencer sempre.
+ */
+#hve-root [hidden] {
+	display: none !important;
+}
+
 /* Toolbar — barra flutuante com desfazer/refazer e o botão principal. */
-.hve-toolbar {
+#hve-root .hve-toolbar {
 	position: fixed;
 	right: 24px;
 	bottom: 24px;
@@ -55,7 +87,7 @@
 	gap: 8px;
 }
 
-.hve-toolbar__toggle {
+#hve-root .hve-toolbar__toggle {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
@@ -73,16 +105,16 @@
 	transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
-.hve-toolbar__toggle:hover {
+#hve-root .hve-toolbar__toggle:hover {
 	background: var( --hve-color-primary-hover );
 	transform: translateY( -1px );
 }
 
-.hve-toolbar__toggle--active {
+#hve-root .hve-toolbar__toggle--active {
 	background: var( --hve-color-danger );
 }
 
-.hve-toolbar__history {
+#hve-root .hve-toolbar__history {
 	width: 40px;
 	height: 40px;
 	border: 1px solid var( --hve-color-border );
@@ -95,16 +127,16 @@
 	box-shadow: var( --hve-shadow-panel );
 }
 
-.hve-toolbar__history:hover:not( :disabled ) {
+#hve-root .hve-toolbar__history:hover:not( :disabled ) {
 	background: var( --hve-color-bg-alt );
 }
 
-.hve-toolbar__history:disabled {
+#hve-root .hve-toolbar__history:disabled {
 	opacity: 0.4;
 	cursor: not-allowed;
 }
 
-.hve-toolbar__save {
+#hve-root .hve-toolbar__save {
 	padding: 12px 18px;
 	border: none;
 	border-radius: 999px;
@@ -118,16 +150,16 @@
 	transition: background-color 0.15s ease;
 }
 
-.hve-toolbar__save:disabled {
+#hve-root .hve-toolbar__save:disabled {
 	opacity: 0.7;
 	cursor: wait;
 }
 
-.hve-toolbar__save--saved {
+#hve-root .hve-toolbar__save--saved {
 	background: var( --hve-color-success );
 }
 
-.hve-toolbar__save--error {
+#hve-root .hve-toolbar__save--error {
 	background: var( --hve-color-danger );
 }
 
@@ -136,13 +168,15 @@ body.hve-editing {
 	cursor: default;
 }
 
+/* Usa a variável de escopo global: este elemento é do conteúdo da página,
+   fora do #hve-root, e não enxerga as variáveis do design system. */
 body.hve-editing [data-hve-editable-root] {
-	outline: 1px dashed var( --hve-color-border );
+	outline: 1px dashed var( --hve-color-editable-hint );
 	outline-offset: 2px;
 }
 
 /* Breadcrumb — hierarquia do elemento selecionado. */
-.hve-breadcrumb {
+#hve-root .hve-breadcrumb {
 	position: fixed;
 	left: 24px;
 	bottom: 24px;
@@ -161,7 +195,7 @@ body.hve-editing [data-hve-editable-root] {
 	font-size: 12px;
 }
 
-.hve-breadcrumb__item {
+#hve-root .hve-breadcrumb__item {
 	border: none;
 	background: transparent;
 	color: var( --hve-color-text-muted );
@@ -171,23 +205,23 @@ body.hve-editing [data-hve-editable-root] {
 	border-radius: 4px;
 }
 
-.hve-breadcrumb__item:hover:not( :disabled ) {
+#hve-root .hve-breadcrumb__item:hover:not( :disabled ) {
 	background: var( --hve-color-bg-alt );
 	color: var( --hve-color-text );
 }
 
-.hve-breadcrumb__item--current {
+#hve-root .hve-breadcrumb__item--current {
 	color: var( --hve-color-text );
 	font-weight: 600;
 	cursor: default;
 }
 
-.hve-breadcrumb__separator {
+#hve-root .hve-breadcrumb__separator {
 	color: var( --hve-color-text-muted );
 }
 
 /* Panel — painel lateral com abas. */
-.hve-panel {
+#hve-root .hve-panel {
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -213,7 +247,7 @@ body.hve-editing [data-hve-editable-root] {
 	}
 }
 
-.hve-panel__header {
+#hve-root .hve-panel__header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -221,7 +255,7 @@ body.hve-editing [data-hve-editable-root] {
 	border-bottom: 1px solid var( --hve-color-border );
 }
 
-.hve-panel__title {
+#hve-root .hve-panel__title {
 	font-size: 14px;
 	font-weight: 600;
 	color: var( --hve-color-text );
@@ -230,7 +264,7 @@ body.hve-editing [data-hve-editable-root] {
 	white-space: nowrap;
 }
 
-.hve-panel__close {
+#hve-root .hve-panel__close {
 	border: none;
 	background: transparent;
 	color: var( --hve-color-text-muted );
@@ -241,18 +275,18 @@ body.hve-editing [data-hve-editable-root] {
 	border-radius: 4px;
 }
 
-.hve-panel__close:hover {
+#hve-root .hve-panel__close:hover {
 	background: var( --hve-color-bg-alt );
 	color: var( --hve-color-text );
 }
 
-.hve-panel__tabs {
+#hve-root .hve-panel__tabs {
 	display: flex;
 	flex-wrap: wrap;
 	border-bottom: 1px solid var( --hve-color-border );
 }
 
-.hve-panel__tab {
+#hve-root .hve-panel__tab {
 	flex: 1 1 auto;
 	padding: 10px 8px;
 	border: none;
@@ -264,23 +298,23 @@ body.hve-editing [data-hve-editable-root] {
 	border-bottom: 2px solid transparent;
 }
 
-.hve-panel__tab:hover {
+#hve-root .hve-panel__tab:hover {
 	color: var( --hve-color-text );
 }
 
-.hve-panel__tab--active {
+#hve-root .hve-panel__tab--active {
 	color: var( --hve-color-primary );
 	border-bottom-color: var( --hve-color-primary );
 	font-weight: 600;
 }
 
-.hve-panel__body {
+#hve-root .hve-panel__body {
 	flex: 1 1 auto;
 	overflow-y: auto;
 	padding: 16px;
 }
 
-.hve-coming-soon {
+#hve-root .hve-coming-soon {
 	color: var( --hve-color-text-muted );
 	font-size: 13px;
 	text-align: center;
@@ -288,13 +322,13 @@ body.hve-editing [data-hve-editable-root] {
 }
 
 /* LayoutTab */
-.hve-layout-tab__grid {
+#hve-root .hve-layout-tab__grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 8px;
 }
 
-.hve-layout-tab__action {
+#hve-root .hve-layout-tab__action {
 	padding: 10px 8px;
 	border: 1px solid var( --hve-color-border );
 	border-radius: var( --hve-radius );
@@ -306,22 +340,22 @@ body.hve-editing [data-hve-editable-root] {
 	transition: background-color 0.15s ease;
 }
 
-.hve-layout-tab__action:hover:not( :disabled ) {
+#hve-root .hve-layout-tab__action:hover:not( :disabled ) {
 	background: var( --hve-color-border );
 }
 
-.hve-layout-tab__action:disabled {
+#hve-root .hve-layout-tab__action:disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
 }
 
 /* ResponsiveTab */
-.hve-responsive-tab__switch {
+#hve-root .hve-responsive-tab__switch {
 	display: flex;
 	gap: 8px;
 }
 
-.hve-responsive-tab__button {
+#hve-root .hve-responsive-tab__button {
 	flex: 1 1 auto;
 	padding: 10px 8px;
 	border: 1px solid var( --hve-color-border );
@@ -333,18 +367,18 @@ body.hve-editing [data-hve-editable-root] {
 	cursor: pointer;
 }
 
-.hve-responsive-tab__button--active {
+#hve-root .hve-responsive-tab__button--active {
 	background: var( --hve-color-primary );
 	border-color: var( --hve-color-primary );
 	color: #ffffff;
 }
 
 /* FieldBuilder — campos compartilhados entre Conteúdo, Imagens e Estilo. */
-.hve-field-section {
+#hve-root .hve-field-section {
 	margin-bottom: 20px;
 }
 
-.hve-field-section__label {
+#hve-root .hve-field-section__label {
 	margin: 0 0 8px;
 	font-size: 11px;
 	font-weight: 600;
@@ -354,13 +388,13 @@ body.hve-editing [data-hve-editable-root] {
 }
 
 /* RichTextToolbar */
-.hve-rte-toolbar {
+#hve-root .hve-rte-toolbar {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 4px;
 }
 
-.hve-rte-toolbar__button {
+#hve-root .hve-rte-toolbar__button {
 	min-width: 32px;
 	padding: 6px 8px;
 	border: 1px solid var( --hve-color-border );
@@ -372,23 +406,23 @@ body.hve-editing [data-hve-editable-root] {
 	cursor: pointer;
 }
 
-.hve-rte-toolbar__button:hover {
+#hve-root .hve-rte-toolbar__button:hover {
 	background: var( --hve-color-border );
 }
 
-.hve-field {
+#hve-root .hve-field {
 	display: block;
 	margin-bottom: 12px;
 }
 
-.hve-field__label {
+#hve-root .hve-field__label {
 	display: block;
 	margin-bottom: 4px;
 	font-size: 12px;
 	color: var( --hve-color-text-muted );
 }
 
-.hve-field__input {
+#hve-root .hve-field__input {
 	width: 100%;
 	padding: 8px 10px;
 	border: 1px solid var( --hve-color-border );
@@ -399,25 +433,25 @@ body.hve-editing [data-hve-editable-root] {
 	font-size: 13px;
 }
 
-.hve-field--checkbox {
+#hve-root .hve-field--checkbox {
 	display: flex;
 	align-items: center;
 	gap: 8px;
 }
 
-.hve-content-tab__raw {
+#hve-root .hve-content-tab__raw {
 	margin-top: 12px;
 	border-top: 1px solid var( --hve-color-border );
 	padding-top: 12px;
 }
 
-.hve-content-tab__raw summary {
+#hve-root .hve-content-tab__raw summary {
 	cursor: pointer;
 	font-size: 12px;
 	color: var( --hve-color-text-muted );
 }
 
-.hve-content-tab__raw-textarea {
+#hve-root .hve-content-tab__raw-textarea {
 	width: 100%;
 	min-height: 100px;
 	margin-top: 8px;
@@ -431,7 +465,7 @@ body.hve-editing [data-hve-editable-root] {
 	resize: vertical;
 }
 
-.hve-content-tab__raw-apply {
+#hve-root .hve-content-tab__raw-apply {
 	margin-top: 8px;
 	padding: 8px 14px;
 	border: none;
@@ -443,7 +477,7 @@ body.hve-editing [data-hve-editable-root] {
 	cursor: pointer;
 }
 
-.hve-content-tab__raw-apply:hover {
+#hve-root .hve-content-tab__raw-apply:hover {
 	background: var( --hve-color-primary-hover );
 }
 
@@ -453,7 +487,7 @@ body.hve-editing .hve-text-editing {
 }
 
 /* ImagesTab */
-.hve-image-tab__preview {
+#hve-root .hve-image-tab__preview {
 	display: block;
 	width: 100%;
 	max-height: 140px;
@@ -464,8 +498,8 @@ body.hve-editing .hve-text-editing {
 	background: var( --hve-color-bg-alt );
 }
 
-.hve-image-tab__pick,
-.hve-image-tab__clear {
+#hve-root .hve-image-tab__pick,
+#hve-root .hve-image-tab__clear {
 	width: 100%;
 	margin-top: 4px;
 	padding: 8px 10px;
@@ -478,17 +512,17 @@ body.hve-editing .hve-text-editing {
 	cursor: pointer;
 }
 
-.hve-image-tab__pick:hover,
-.hve-image-tab__clear:hover {
+#hve-root .hve-image-tab__pick:hover,
+#hve-root .hve-image-tab__clear:hover {
 	background: var( --hve-color-border );
 }
 
-.hve-image-tab__clear {
+#hve-root .hve-image-tab__clear {
 	color: var( --hve-color-danger );
 }
 
 /* StyleTab */
-.hve-style-tab__breakpoint-note {
+#hve-root .hve-style-tab__breakpoint-note {
 	margin: 0 0 12px;
 	padding: 6px 10px;
 	border-radius: 4px;
@@ -498,21 +532,233 @@ body.hve-editing .hve-text-editing {
 	text-align: center;
 }
 
-.hve-style-tab__group {
+#hve-root .hve-style-tab__group {
 	margin-bottom: 10px;
 	border: 1px solid var( --hve-color-border );
 	border-radius: var( --hve-radius );
 	padding: 10px 12px;
 }
 
-.hve-style-tab__group summary {
+#hve-root .hve-style-tab__group summary {
 	cursor: pointer;
 	font-size: 12px;
 	font-weight: 600;
 	color: var( --hve-color-text );
 }
 
-.hve-style-tab__group .hve-field {
+#hve-root .hve-style-tab__group .hve-field {
 	margin-top: 10px;
 	margin-bottom: 0;
+}
+
+/* ---------------------------------------------------------------------
+ * Notificações e modal de confirmação.
+ *
+ * Todos os seletores abaixo são ancorados em `#hve-root` de propósito: o
+ * tema do site (e o Elementor) definem regras para `button` que, com
+ * apenas uma classe, venceriam as nossas por especificidade — foi o que
+ * fez o botão destrutivo aparecer sem a cor de perigo. Um seletor de ID
+ * garante que a UI do editor tenha sempre a mesma aparência, em qualquer
+ * tema.
+ * ------------------------------------------------------------------ */
+
+/* Notificações — canto inferior esquerdo, longe da toolbar (canto
+   #hve-root inferior direito) e do painel lateral (borda direita). */ #hve-root .hve-notifications {
+	position: fixed;
+	left: 24px;
+	bottom: 24px;
+	z-index: var( --hve-z-index );
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	max-width: min( 360px, calc( 100vw - 48px ) );
+	pointer-events: none;
+}
+
+#hve-root .hve-notification {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	margin: 0;
+	padding: 12px 14px;
+	border: 1px solid var( --hve-color-border );
+	border-left: 4px solid var( --hve-color-primary );
+	border-radius: var( --hve-radius );
+	background: var( --hve-color-bg );
+	color: var( --hve-color-text );
+	box-shadow: var( --hve-shadow-panel );
+	font-family: var( --hve-font );
+	font-size: 14px;
+	line-height: 1.4;
+	pointer-events: auto;
+
+	/* Estado inicial da animação de entrada. */
+	opacity: 0;
+	transform: translateY( 8px );
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#hve-root .hve-notification--visible {
+	opacity: 1;
+	transform: translateY( 0 );
+}
+
+#hve-root .hve-notification--success {
+	border-left-color: var( --hve-color-success );
+}
+
+#hve-root .hve-notification--error {
+	border-left-color: var( --hve-color-danger );
+}
+
+#hve-root .hve-notification__text {
+	flex: 1;
+	color: var( --hve-color-text );
+}
+
+#hve-root .hve-notification__close {
+	flex: 0 0 auto;
+	width: auto;
+	min-width: 0;
+	margin: 0;
+	padding: 0 2px;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	color: var( --hve-color-text-muted );
+	font-family: var( --hve-font );
+	font-size: 18px;
+	line-height: 1;
+	text-transform: none;
+	cursor: pointer;
+}
+
+#hve-root .hve-notification__close:hover {
+	background: transparent;
+	color: var( --hve-color-text );
+}
+
+/* Modal de confirmação — usado antes de qualquer ação destrutiva. */
+#hve-root .hve-confirm {
+	position: fixed;
+	inset: 0;
+	z-index: calc( var( --hve-z-index ) + 1 );
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	background: rgba( 0, 0, 0, 0.5 );
+}
+
+#hve-root .hve-confirm[hidden] {
+	display: none;
+}
+
+#hve-root .hve-confirm__box {
+	width: 100%;
+	max-width: 420px;
+	padding: 20px;
+	border-radius: var( --hve-radius );
+	background: var( --hve-color-bg );
+	box-shadow: var( --hve-shadow-panel );
+	animation: hve-confirm-in 0.15s ease-out;
+}
+
+@keyframes hve-confirm-in {
+	from {
+		opacity: 0;
+		transform: scale( 0.96 );
+	}
+
+	to {
+		opacity: 1;
+		transform: scale( 1 );
+	}
+}
+
+#hve-root .hve-confirm__title {
+	margin: 0 0 8px;
+	padding: 0;
+	color: var( --hve-color-text );
+	font-family: var( --hve-font );
+	font-size: 17px;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+#hve-root .hve-confirm__message {
+	margin: 0 0 18px;
+	padding: 0;
+	color: var( --hve-color-text-muted );
+	font-family: var( --hve-font );
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+#hve-root .hve-confirm__actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+#hve-root .hve-confirm__button {
+	width: auto;
+	min-width: 0;
+	margin: 0;
+	padding: 9px 16px;
+	border: 1px solid var( --hve-color-border );
+	border-radius: var( --hve-radius );
+	background: var( --hve-color-bg-alt );
+	box-shadow: none;
+	color: var( --hve-color-text );
+	font-family: var( --hve-font );
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.2;
+	text-transform: none;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+#hve-root .hve-confirm__button:hover {
+	border-color: var( --hve-color-text-muted );
+	background: var( --hve-color-bg-alt );
+}
+
+#hve-root .hve-confirm__button--confirm {
+	border-color: var( --hve-color-primary );
+	background: var( --hve-color-primary );
+	color: #ffffff;
+}
+
+#hve-root .hve-confirm__button--confirm:hover {
+	border-color: var( --hve-color-primary-hover );
+	background: var( --hve-color-primary-hover );
+	color: #ffffff;
+}
+
+/* A ação destrutiva precisa ser inconfundível, em qualquer tema. */
+#hve-root .hve-confirm__button--danger,
+#hve-root .hve-confirm__button--confirm.hve-confirm__button--danger {
+	border-color: var( --hve-color-danger );
+	background: var( --hve-color-danger );
+	color: #ffffff;
+}
+
+#hve-root .hve-confirm__button--danger:hover,
+#hve-root .hve-confirm__button--confirm.hve-confirm__button--danger:hover {
+	border-color: #b91c1c;
+	background: #b91c1c;
+	color: #ffffff;
+}
+
+/* Respeita quem pediu menos movimento no sistema operacional. */
+@media ( prefers-reduced-motion: reduce ) {
+	#hve-root .hve-notification,
+	#hve-root .hve-confirm__box {
+		transition: none;
+		animation: none;
+	}
 }

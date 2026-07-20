@@ -1,0 +1,16 @@
+{
+  "name": "html-visual-editor-dev",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ferramentas de desenvolvimento (testes automatizados) do plugin HTML Visual Editor. Não faz parte do plugin distribuído — o build empacota apenas a pasta html-visual-editor/.",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}
