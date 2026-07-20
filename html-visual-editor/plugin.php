@@ -6,8 +6,8 @@
  * Version:           1.1.2
  * Requires at least: 6.0
  * Requires PHP:      8.0
- * Author:            Gessyka Pollynny
- * Author URI:        https://github.com/GessykaPollynny
+ * Author:            Gessyka Pollynny - Usuart
+ * Author URI:        https://usuart.com
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       html-visual-editor

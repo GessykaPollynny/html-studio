@@ -1,4 +1,4 @@
-# Copyright (C) 2026 Gessyka Pollynny
+# Copyright (C) 2026 Gessyka Pollynny - Usuart
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
