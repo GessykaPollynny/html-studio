@@ -516,3 +516,179 @@ body.hve-editing .hve-text-editing {
 	margin-top: 10px;
 	margin-bottom: 0;
 }
+
+/* ---------------------------------------------------------------------
+ * Notificações — mensagens temporárias empilhadas no canto inferior
+ * esquerdo, longe da toolbar (canto inferior direito) e do painel
+ * lateral (borda direita).
+ * ------------------------------------------------------------------ */
+.hve-notifications {
+	position: fixed;
+	left: 24px;
+	bottom: 24px;
+	z-index: var( --hve-z-index );
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	max-width: min( 360px, calc( 100vw - 48px ) );
+	pointer-events: none;
+}
+
+.hve-notification {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	padding: 12px 14px;
+	border: 1px solid var( --hve-color-border );
+	border-left: 4px solid var( --hve-color-primary );
+	border-radius: var( --hve-radius );
+	background: var( --hve-color-bg );
+	color: var( --hve-color-text );
+	box-shadow: var( --hve-shadow-panel );
+	font-size: 14px;
+	line-height: 1.4;
+	pointer-events: auto;
+
+	/* Estado inicial da animação de entrada. */
+	opacity: 0;
+	transform: translateY( 8px );
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.hve-notification--visible {
+	opacity: 1;
+	transform: translateY( 0 );
+}
+
+.hve-notification--success {
+	border-left-color: var( --hve-color-success );
+}
+
+.hve-notification--error {
+	border-left-color: var( --hve-color-danger );
+}
+
+.hve-notification__text {
+	flex: 1;
+}
+
+.hve-notification__close {
+	flex: 0 0 auto;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var( --hve-color-text-muted );
+	font-size: 18px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.hve-notification__close:hover {
+	color: var( --hve-color-text );
+}
+
+/* ---------------------------------------------------------------------
+ * Modal de confirmação — usado antes de qualquer ação destrutiva.
+ * ------------------------------------------------------------------ */
+.hve-confirm {
+	position: fixed;
+	inset: 0;
+	z-index: calc( var( --hve-z-index ) + 1 );
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	background: rgba( 0, 0, 0, 0.5 );
+}
+
+.hve-confirm[hidden] {
+	display: none;
+}
+
+.hve-confirm__box {
+	width: 100%;
+	max-width: 420px;
+	padding: 20px;
+	border-radius: var( --hve-radius );
+	background: var( --hve-color-bg );
+	box-shadow: var( --hve-shadow-panel );
+	animation: hve-confirm-in 0.15s ease-out;
+}
+
+@keyframes hve-confirm-in {
+	from {
+		opacity: 0;
+		transform: scale( 0.96 );
+	}
+
+	to {
+		opacity: 1;
+		transform: scale( 1 );
+	}
+}
+
+.hve-confirm__title {
+	margin: 0 0 8px;
+	color: var( --hve-color-text );
+	font-size: 17px;
+	font-weight: 600;
+}
+
+.hve-confirm__message {
+	margin: 0 0 18px;
+	color: var( --hve-color-text-muted );
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.hve-confirm__actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+.hve-confirm__button {
+	padding: 9px 16px;
+	border: 1px solid var( --hve-color-border );
+	border-radius: var( --hve-radius );
+	background: var( --hve-color-bg-alt );
+	color: var( --hve-color-text );
+	font-family: var( --hve-font );
+	font-size: 14px;
+	cursor: pointer;
+	transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.hve-confirm__button:hover {
+	border-color: var( --hve-color-text-muted );
+}
+
+.hve-confirm__button--confirm {
+	border-color: var( --hve-color-primary );
+	background: var( --hve-color-primary );
+	color: #ffffff;
+}
+
+.hve-confirm__button--confirm:hover {
+	background: var( --hve-color-primary-hover );
+	border-color: var( --hve-color-primary-hover );
+}
+
+.hve-confirm__button--danger {
+	border-color: var( --hve-color-danger );
+	background: var( --hve-color-danger );
+}
+
+.hve-confirm__button--danger:hover {
+	background: #b91c1c;
+	border-color: #b91c1c;
+}
+
+/* Respeita quem pediu menos movimento no sistema operacional. */
+@media ( prefers-reduced-motion: reduce ) {
+	.hve-notification,
+	.hve-confirm__box {
+		transition: none;
+		animation: none;
+	}
+}

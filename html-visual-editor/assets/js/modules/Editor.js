@@ -12,6 +12,8 @@ import HistoryManager from './HistoryManager.js';
 import KeyboardShortcuts from './KeyboardShortcuts.js';
 import StorageManager from './StorageManager.js';
 import DomWatcher from './DomWatcher.js';
+import Notifications from './Notifications.js';
+import ConfirmDialog from './ConfirmDialog.js';
 import { WIDGET_CONTAINER_SELECTOR } from './constants.js';
 
 const PANEL_TABS = [
@@ -68,6 +70,8 @@ export default class Editor {
 			redo: () => this.redo(),
 		} );
 		this.storage = new StorageManager( config, () => this.getEditableRoots() );
+		this.notifications = new Notifications( root );
+		this.confirmDialog = new ConfirmDialog( root );
 	}
 
 	/**
@@ -78,9 +82,12 @@ export default class Editor {
 		this.toolbar.mount();
 		this.breadcrumb.mount();
 		this.panel.mount();
+		this.notifications.mount();
+		this.confirmDialog.mount();
 
 		this.panel.setReselectHandler( ( element ) => this.reselect( element ) );
 		this.panel.setChangeHandler( () => this.handleStructuralChange() );
+		this.panel.setConfirmHandler( ( options ) => this.confirmDialog.ask( options ) );
 
 		this.registerPanelTabs();
 
@@ -169,8 +176,10 @@ export default class Editor {
 		try {
 			await this.storage.save();
 			this.toolbar.setSaveState( 'saved' );
+			this.notifications.success( this.config.i18n.saved );
 		} catch ( error ) {
 			this.toolbar.setSaveState( 'error' );
+			this.notifications.error( this.config.i18n.saveError );
 		}
 	}
 

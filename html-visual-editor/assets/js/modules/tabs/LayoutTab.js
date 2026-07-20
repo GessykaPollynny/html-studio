@@ -74,10 +74,28 @@ export default class LayoutTab {
 		this.context.reselect( clone );
 	}
 
-	remove() {
-		const { element } = this.context;
+	/**
+	 * Exclui o elemento selecionado — sempre atrás de uma confirmação
+	 * explícita, por ser a única ação da aba que destrói conteúdo.
+	 * O contexto é relido após o `await` porque o usuário pode ter
+	 * trocado de seleção (ou fechado o painel) enquanto o modal estava
+	 * aberto; agir sobre o contexto antigo apagaria o elemento errado.
+	 */
+	async remove() {
+		const contextAtRequest = this.context;
 
-		element.remove();
+		const confirmed = await contextAtRequest.confirm( {
+			title: 'Excluir elemento',
+			message: 'Este elemento e todo o conteúdo dentro dele serão removidos. Você ainda poderá desfazer com Ctrl+Z antes de salvar.',
+			confirmLabel: 'Excluir',
+			danger: true,
+		} );
+
+		if ( ! confirmed || this.context !== contextAtRequest ) {
+			return;
+		}
+
+		this.context.element.remove();
 
 		this.context.notifyChange();
 		this.context.deselect();

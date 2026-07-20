@@ -71,6 +71,37 @@ completo, aba nova sem cache de estado):
    atributo `data-hve-style-id` já existente no DOM em vez de sempre cunhar um
    novo id.
 
+## 3.1 Auditoria do escopo original (20/07/2026)
+
+Conferência item a item do briefing original contra o código: **~95%
+implementado**. Estavam presentes e verificados no código: estrutura de
+pastas, arquitetura (PHP 8+/namespace/ES6 modules/CSS puro/sem jQuery),
+as 5 abas completas (Conteúdo, Imagens com preview, as 20 propriedades de
+Estilo, as 8 ações de Layout incl. agrupar/desagrupar, Responsivo), os 7
+comandos do rich text próprio, undo/redo, salvamento real, as 25 tags
+suportadas, performance (MutationObserver + event delegation + cache) e
+segurança.
+
+Lacunas encontradas e **já fechadas** nesta data:
+
+- **Modal de confirmação** (`ConfirmDialog.js`) — o "Excluir" da aba Layout
+  apagava o elemento sem perguntar. Agora toda exclusão passa por
+  confirmação explícita, com o foco iniciando em "Cancelar" e Esc/clique no
+  fundo cancelando. Coberto por testes, inclusive a garantia negativa (não
+  confirmar ⇒ elemento permanece no DOM).
+- **Sistema de notificações** (`Notifications.js`) — antes o único feedback
+  era o texto do botão Salvar. Agora há toasts de sucesso/erro, acessíveis
+  (`aria-live`), com dark mode e respeito a `prefers-reduced-motion`.
+
+Lacunas **ainda abertas** do escopo original:
+
+- **Nomes de módulos divergentes do briefing**: pedido `ResponsiveManager`
+  (existe `ResponsiveState.js`, que cumpre a função) e `Renderer` (não
+  existe; as responsabilidades estão em `Panel.js` + `FieldBuilder.js`).
+  Funcional, mas foge do contrato de arquitetura especificado.
+- **Loading**: existe apenas como estado do botão Salvar ("Salvando..."),
+  sem indicador dedicado.
+
 ## 4. O que falta / pendências conhecidas
 
 - **Múltiplos Widgets HTML na mesma página** — _blindado no código

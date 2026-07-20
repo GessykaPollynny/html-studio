@@ -205,7 +205,28 @@ export default class Panel {
 			reselect: ( element ) => this.onReselect( element ),
 			deselect: () => this.onClose(),
 			notifyChange: () => this.onChange(),
+			confirm: ( options ) => this.onConfirm( options ),
 		};
+	}
+
+	/**
+	 * Confirmação padrão, usada enquanto o Editor não injeta o modal
+	 * próprio. Recorre ao `window.confirm` nativo de propósito: é
+	 * preferível uma caixa feia a uma ação destrutiva sem pergunta —
+	 * e também a um botão que simplesmente não funciona.
+	 *
+	 * @param {{message?: string}} options
+	 * @return {Promise<boolean>}
+	 */
+	onConfirm( options = {} ) {
+		return Promise.resolve( window.confirm( options.message || 'Deseja continuar?' ) );
+	}
+
+	/**
+	 * @param {(options: Object) => Promise<boolean>} handler
+	 */
+	setConfirmHandler( handler ) {
+		this.onConfirm = handler;
 	}
 
 	/**
