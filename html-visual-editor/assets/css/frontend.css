@@ -44,6 +44,21 @@
 	box-sizing: border-box;
 }
 
+/**
+ * O atributo `hidden` precisa vencer o `display` declarado por cada
+ * componente (o painel é `display: flex`, os botões da toolbar são
+ * `inline-flex`). Sem esta regra o plugin ficaria dependendo do
+ * `[hidden] { display: none }` do reset do tema — o que funcionava por
+ * acidente, e deixou de funcionar quando os seletores do editor passaram
+ * a ser ancorados em `#hve-root` e ganharam especificidade maior.
+ *
+ * O `!important` é intencional e segue o padrão do HTML5 Boilerplate:
+ * trata-se de um utilitário de estado, que deve vencer sempre.
+ */
+#hve-root [hidden] {
+	display: none !important;
+}
+
 /* Toolbar — barra flutuante com desfazer/refazer e o botão principal. */
 #hve-root .hve-toolbar {
 	position: fixed;

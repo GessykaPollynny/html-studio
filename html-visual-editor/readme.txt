@@ -4,7 +4,7 @@ Tags: elementor, html widget, visual editor, page builder
 Requires at least: 6.0
 Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,9 @@ responsividade, e as alterações são salvas de volta no Widget HTML original.
 3. Certifique-se de que o Elementor (Free ou Pro) está instalado e ativo.
 
 == Changelog ==
+
+= 1.1.1 =
+* Correção: o painel lateral e os botões da toolbar voltam a respeitar o atributo `hidden`. Ao ancorar os estilos em `#hve-root` na 1.1.0, o plugin perdeu o `[hidden] { display: none }` que vinha por acidente do reset do tema.
 
 = 1.1.0 =
 * Modal de confirmação antes de excluir um elemento — a ação destrutiva não acontece mais com um clique só.
