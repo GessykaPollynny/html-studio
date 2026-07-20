@@ -93,6 +93,24 @@ Lacunas encontradas e **já fechadas** nesta data:
   era o texto do botão Salvar. Agora há toasts de sucesso/erro, acessíveis
   (`aria-live`), com dark mode e respeito a `prefers-reduced-motion`.
 
+### Achado do teste ao vivo: CSS do tema vaza para a UI do editor
+
+Ao testar o modal em `quantimob.usuart.com`, o botão destrutivo apareceu
+**sem a cor de perigo**: fundo transparente e texto na cor do tema
+(`rgb(204,51,102)`) em vez do vermelho. Causa: as regras do plugin usam
+apenas uma classe (`.hve-...`), e as regras do tema/Elementor para
+`button` vencem por especificidade. `#hve-root { all: initial }` reseta
+somente o container, não os descendentes.
+
+Corrigido nos componentes novos ancorando os seletores em `#hve-root`
+(seletor de ID), o que foi **validado ao vivo**: o fundo passou a
+`rgb(220,38,38)` com texto branco.
+
+**Atenção — o mesmo problema afeta o resto da UI** (toolbar, painel,
+abas), que continua herdando cores do tema. Não é quebra funcional, mas
+faz o editor mudar de aparência conforme o tema do site. Correção
+pendente: ancorar todo o `frontend.css` em `#hve-root`.
+
 Lacunas **ainda abertas** do escopo original:
 
 - **Nomes de módulos divergentes do briefing**: pedido `ResponsiveManager`
