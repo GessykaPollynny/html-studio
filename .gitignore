@@ -1,0 +1,9 @@
+# Artefato de build (gerado a partir de html-visual-editor/)
+html-visual-editor.zip
+
+# Configuração local da IDE/sessão (caminhos específicos da máquina)
+.claude/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
