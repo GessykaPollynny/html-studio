@@ -4,6 +4,10 @@ html-visual-editor.zip
 # Configuração local da IDE/sessão (caminhos específicos da máquina)
 .claude/
 
+# Dependências e artefatos das ferramentas de teste (dev only)
+node_modules/
+coverage/
+
 # Sistema operacional
 .DS_Store
 Thumbs.db

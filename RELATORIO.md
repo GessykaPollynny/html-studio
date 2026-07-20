@@ -85,8 +85,16 @@ completo, aba nova sem cache de estado):
 - **Seleção de imagem já existente na Media Library** — não testada de fato
   (biblioteca do site de teste estava vazia; precisa de upload manual de ao
   menos uma imagem para completar o teste).
-- **Sem testes automatizados** (nem PHPUnit nem Jest) — toda a validação foi
-  manual/exploratória num navegador.
+- **Testes automatizados** — _iniciados (20/07/2026)._ Base de testes JS com
+  **Jest + jsdom** na raiz do repositório (`package.json`, `jest.config.cjs`,
+  `babel.config.cjs`, `tests/`), fora da pasta do plugin para não ir no
+  build. `npm test` roda 9 testes cobrindo o coração do salvamento no
+  frontend: `resolveElementId` (a correção de múltiplos widgets, incl. o
+  caso de dois ids distintos sem colisão), `stripEditingArtifacts`,
+  `collectStyleIds` e `buildSavableHtml`. **Ainda falta:** PHPUnit para o
+  backend (`RestSaveController::apply_to_elements`, `HtmlWidgetDetector`) —
+  não montado aqui porque a máquina de desenvolvimento atual não tem PHP
+  instalado; roda em CI ou em ambiente com PHP.
 - **Auditoria de segurança** — _feita (20/07/2026)._ Revisão dedicada das
   superfícies sensíveis: endpoint REST `/save` (nonce `X-WP-Nonce` validado
   pelo core, `permission_callback` com `current_user_can('edit_post')`,
