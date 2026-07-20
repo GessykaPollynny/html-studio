@@ -1,12 +1,13 @@
 <?php
 /**
  * Plugin Name:       HTML Visual Editor
- * Plugin URI:        https://example.com/html-visual-editor
+ * Plugin URI:        https://github.com/GessykaPollynny/html-studio
  * Description:       Editor visual para conteúdos inseridos no Widget HTML do Elementor. Edite textos, imagens, botões e estilos sem tocar em código.
  * Version:           1.1.2
  * Requires at least: 6.0
  * Requires PHP:      8.0
- * Author:            Sua Empresa
+ * Author:            Gessyka Pollynny
+ * Author URI:        https://github.com/GessykaPollynny
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       html-visual-editor
