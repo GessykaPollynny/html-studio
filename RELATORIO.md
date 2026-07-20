@@ -87,10 +87,23 @@ completo, aba nova sem cache de estado):
   menos uma imagem para completar o teste).
 - **Sem testes automatizados** (nem PHPUnit nem Jest) — toda a validação foi
   manual/exploratória num navegador.
-- **Sem auditoria de segurança formal** — nonce, capability check
-  (`current_user_can('edit_post', ...)`) e sanitização (`wp_kses_post` /
-  `unfiltered_html`) seguem os padrões do WordPress, mas não houve revisão
-  dedicada de segurança.
+- **Auditoria de segurança** — _feita (20/07/2026)._ Revisão dedicada das
+  superfícies sensíveis: endpoint REST `/save` (nonce `X-WP-Nonce` validado
+  pelo core, `permission_callback` com `current_user_can('edit_post')`,
+  `postId` via `absint`, casts explícitos), sanitização do HTML salvo
+  (`wp_kses_post` para quem não tem `unfiltered_html`), carregamento de
+  assets gated por `EditableContext`, SQL do `uninstall.php` com
+  `$wpdb->prepare`, saída no admin com `esc_html__`, e sinks de `innerHTML`
+  no JS. **Nenhuma vulnerabilidade encontrada.** Aplicada uma limpeza:
+  removidos `ajaxUrl` e o nonce `hve_editor_action` do `wp_localize_script`
+  (`frontend/AssetManager.php`) por serem código morto (sem handler
+  admin-ajax e sem uso no JS). Riscos aceitos por design, registrados aqui:
+  (a) usuários com `unfiltered_html` podem salvar HTML bruto — intencional e
+  idêntico ao próprio Widget HTML do Elementor; (b) o "Editar HTML interno"
+  (`ContentTab.js`) é um caso de self-XSS (só afeta a sessão de quem edita o
+  próprio conteúdo), com a sanitização no servidor como rede de proteção
+  real. Observação: não substitui um pentest formal, mas cobre as
+  superfícies relevantes de um plugin WordPress.
 - **Compatibilidade não testada** com Elementor Pro, outros temas, ou o
   "editor atômico" (containers novos) do Elementor v4 além do Widget HTML
   clássico.
