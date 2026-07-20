@@ -4,7 +4,7 @@ Tags: elementor, html widget, visual editor, page builder
 Requires at least: 6.0
 Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,12 @@ responsividade, e as alterações são salvas de volta no Widget HTML original.
 3. Certifique-se de que o Elementor (Free ou Pro) está instalado e ativo.
 
 == Changelog ==
+
+= 1.1.0 =
+* Modal de confirmação antes de excluir um elemento — a ação destrutiva não acontece mais com um clique só.
+* Sistema de notificações (toasts) com feedback de sucesso/erro ao salvar.
+* Correção: múltiplos Widgets HTML na mesma página agora são casados pelo id estável do Elementor, eliminando o risco de o conteúdo de um widget ser gravado em outro.
+* Correção: estilos da interface do editor ancorados em `#hve-root`, para que o tema do site não sobrescreva as cores do plugin.
 
 = 1.0.0 =
 * Fase 1: estrutura inicial do plugin, autoloader, detecção do Widget HTML e carregamento condicional de assets.
