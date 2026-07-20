@@ -73,11 +73,15 @@ completo, aba nova sem cache de estado):
 
 ## 4. O que falta / pendências conhecidas
 
-- **Múltiplos Widgets HTML na mesma página** — nunca testado. O salvamento
-  mapeia cada widget por índice (`RestSaveController::apply_to_elements`);
-  existe risco teórico de o conteúdo de um widget vazar para outro se a
-  ordem de percurso do DOM divergir da ordem no `_elementor_data`. **Este é o
-  próximo teste prioritário.**
+- **Múltiplos Widgets HTML na mesma página** — _blindado no código
+  (18/07/2026)._ O salvamento agora casa cada widget pelo `id` estável do
+  Elementor (`data-id` no DOM ↔ chave `"id"` em `_elementor_data`), com a
+  ordem de percurso mantida apenas como fallback de compatibilidade. Isso
+  elimina o risco de o conteúdo de um widget vazar para outro quando a ordem
+  do DOM diverge da ordem no `_elementor_data`. Arquivos:
+  `assets/js/modules/StorageManager.js` (envia `elementId`) e
+  `frontend/RestSaveController.php` (`apply_to_elements` casa por id).
+  **Ainda falta validar ao vivo** numa página com dois ou mais Widgets HTML.
 - **Seleção de imagem já existente na Media Library** — não testada de fato
   (biblioteca do site de teste estava vazia; precisa de upload manual de ao
   menos uma imagem para completar o teste).

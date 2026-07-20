@@ -34,6 +34,7 @@ export default class StorageManager {
 	async save() {
 		const widgets = this.getRoots().map( ( root, index ) => ( {
 			index,
+			elementId: this.resolveElementId( root ),
 			html: this.buildSavableHtml( root ),
 		} ) );
 
@@ -55,6 +56,25 @@ export default class StorageManager {
 		}
 
 		return response.json();
+	}
+
+	/**
+	 * Descobre o ID único que o Elementor atribui ao Widget HTML que
+	 * contém este container. Esse ID vem do atributo `data-id` do wrapper
+	 * `.elementor-element` renderizado pelo Elementor e é exatamente a
+	 * mesma chave `"id"` gravada dentro de `_elementor_data`. Enviá-lo ao
+	 * backend permite casar cada widget pelo seu identificador estável, em
+	 * vez de depender da ordem em que os widgets aparecem no DOM — o que
+	 * elimina o risco de o conteúdo de um widget ser gravado em outro
+	 * quando há vários Widgets HTML na mesma página.
+	 *
+	 * @param {Element} root
+	 * @return {string} ID do elemento Elementor, ou '' se não encontrado.
+	 */
+	resolveElementId( root ) {
+		const widget = root.closest( '.elementor-element[data-id]' );
+
+		return widget ? widget.getAttribute( 'data-id' ) : '';
 	}
 
 	/**
