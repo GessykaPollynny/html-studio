@@ -20,9 +20,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Registra `POST /wp-json/hve/v1/save`, que localiza os Widgets HTML de
- * um post em `_elementor_data` (na mesma ordem em que aparecem no DOM) e
- * grava o HTML editado usando exclusivamente APIs nativas do WordPress —
- * nunca apenas no navegador.
+ * um post em `_elementor_data` (casando cada um pelo `id` estável do
+ * Elementor, com a ordem de percurso apenas como fallback) e grava o HTML
+ * editado usando exclusivamente APIs nativas do WordPress — nunca apenas
+ * no navegador.
  */
 final class RestSaveController {
 
@@ -112,16 +113,27 @@ final class RestSaveController {
 			);
 		}
 
-		$incoming_html = array();
+		$incoming_by_id    = array();
+		$incoming_by_index = array();
 
 		foreach ( $widgets as $widget ) {
-			if ( isset( $widget['index'], $widget['html'] ) ) {
-				$incoming_html[ (int) $widget['index'] ] = (string) $widget['html'];
+			if ( ! isset( $widget['html'] ) ) {
+				continue;
+			}
+
+			$html = (string) $widget['html'];
+
+			if ( isset( $widget['elementId'] ) && '' !== (string) $widget['elementId'] ) {
+				$incoming_by_id[ (string) $widget['elementId'] ] = $html;
+			}
+
+			if ( isset( $widget['index'] ) ) {
+				$incoming_by_index[ (int) $widget['index'] ] = $html;
 			}
 		}
 
 		$cursor  = 0;
-		$updated = $this->apply_to_elements( $elements, $incoming_html, $cursor );
+		$updated = $this->apply_to_elements( $elements, $incoming_by_id, $incoming_by_index, $cursor );
 
 		update_post_meta( $post_id, '_elementor_data', wp_slash( (string) wp_json_encode( $updated ) ) );
 
@@ -133,30 +145,43 @@ final class RestSaveController {
 
 	/**
 	 * Percorre recursivamente a árvore de elementos do Elementor,
-	 * substituindo o HTML de cada Widget HTML encontrado (na ordem em
-	 * que aparecem) pelo conteúdo recebido do editor.
+	 * substituindo o HTML de cada Widget HTML encontrado pelo conteúdo
+	 * recebido do editor.
 	 *
-	 * @param array<int,mixed> $elements Elementos/seções do Elementor.
-	 * @param array<int,string> $incoming_html HTML recebido, indexado pela ordem de renderização.
+	 * A correspondência é feita, sempre que possível, pelo `id` estável que
+	 * o Elementor atribui a cada elemento — o mesmo `data-id` que o frontend
+	 * lê do DOM. Só quando o widget recebido não trouxe um id conhecido é que
+	 * se recorre à ordem de percurso (`$cursor`), preservada apenas como
+	 * fallback de compatibilidade. Isso impede que, havendo vários Widgets
+	 * HTML na página, o conteúdo de um seja gravado sobre o de outro caso a
+	 * ordem do DOM divirja da ordem em `_elementor_data`.
+	 *
+	 * @param array<int,mixed>  $elements Elementos/seções do Elementor.
+	 * @param array<string,string> $incoming_by_id HTML recebido, indexado pelo id do elemento Elementor.
+	 * @param array<int,string> $incoming_by_index HTML recebido, indexado pela ordem de renderização (fallback).
 	 * @param int               $cursor Contador de widgets HTML já visitados (passado por referência).
 	 * @return array<int,mixed>
 	 */
-	private function apply_to_elements( array $elements, array $incoming_html, int &$cursor ): array {
+	private function apply_to_elements( array $elements, array $incoming_by_id, array $incoming_by_index, int &$cursor ): array {
 		foreach ( $elements as &$element ) {
 			if ( ! is_array( $element ) ) {
 				continue;
 			}
 
 			if ( isset( $element['widgetType'] ) && self::WIDGET_TYPE === $element['widgetType'] ) {
-				if ( array_key_exists( $cursor, $incoming_html ) ) {
-					$element['settings']['html'] = $this->sanitize_html( $incoming_html[ $cursor ] );
+				$element_id = isset( $element['id'] ) ? (string) $element['id'] : '';
+
+				if ( '' !== $element_id && array_key_exists( $element_id, $incoming_by_id ) ) {
+					$element['settings']['html'] = $this->sanitize_html( $incoming_by_id[ $element_id ] );
+				} elseif ( array_key_exists( $cursor, $incoming_by_index ) ) {
+					$element['settings']['html'] = $this->sanitize_html( $incoming_by_index[ $cursor ] );
 				}
 
 				++$cursor;
 			}
 
 			if ( ! empty( $element['elements'] ) && is_array( $element['elements'] ) ) {
-				$element['elements'] = $this->apply_to_elements( $element['elements'], $incoming_html, $cursor );
+				$element['elements'] = $this->apply_to_elements( $element['elements'], $incoming_by_id, $incoming_by_index, $cursor );
 			}
 		}
 
