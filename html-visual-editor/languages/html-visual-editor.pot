@@ -1,11 +1,67 @@
-# Copyright (C) 2026 HTML Visual Editor
+# Copyright (C) 2026 Gessyka Pollynny - Usuart
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: HTML Visual Editor 1.0.0\n"
+"Project-Id-Version: HTML Visual Editor 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-16T00:00:00+00:00\n"
+"POT-Creation-Date: 2026-07-20T00:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language-Team: \n"
+"Last-Translator: \n"
 "X-Domain: html-visual-editor\n"
+
+#: admin/AdminNotices.php:44
+msgid "HTML Visual Editor requer o plugin Elementor ativo. Ative o Elementor para habilitar a edição visual dos Widgets HTML."
+msgstr ""
+
+#: frontend/AssetManager.php:101
+msgid "Editar HTML"
+msgstr ""
+
+#: frontend/AssetManager.php:102
+msgid "Sair da edição"
+msgstr ""
+
+#: frontend/AssetManager.php:103
+msgid "Salvar"
+msgstr ""
+
+#: frontend/AssetManager.php:104
+msgid "Salvando..."
+msgstr ""
+
+#: frontend/AssetManager.php:105
+msgid "Alterações salvas com sucesso."
+msgstr ""
+
+#: frontend/AssetManager.php:106
+msgid "Não foi possível salvar. Tente novamente."
+msgstr ""
+
+#: frontend/RestSaveController.php:79
+msgid "Post inválido."
+msgstr ""
+
+#: frontend/RestSaveController.php:87
+msgid "Você não tem permissão para editar este conteúdo."
+msgstr ""
+
+#: frontend/RestSaveController.php:111
+msgid "Este conteúdo não possui dados do Elementor."
+msgstr ""
+
+#: includes/Activator.php:42
+msgid "HTML Visual Editor requer PHP 8.0 ou superior. Atualize o PHP do servidor para ativar o plugin."
+msgstr ""
+
+#: includes/Activator.php:43
+#: includes/Activator.php:55
+msgid "Erro de ativação"
+msgstr ""
+
+#: includes/Activator.php:54
+msgid "HTML Visual Editor requer WordPress 6.0 ou superior."
+msgstr ""
