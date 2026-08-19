@@ -1,4 +1,4 @@
-import { WIDGET_CONTAINER_SELECTOR } from './constants.js';
+import { WIDGET_SELECTOR, resolveWidgetRoot } from './constants.js';
 
 /**
  * DomWatcher — mantém a lista de Widgets HTML sincronizada com o DOM em
@@ -37,27 +37,29 @@ export default class DomWatcher {
 	 */
 	handleMutations( mutations ) {
 		mutations.forEach( ( mutation ) => {
-			mutation.addedNodes.forEach( ( node ) => this.reportContainers( node, this.handlers.onWidgetAdded ) );
-			mutation.removedNodes.forEach( ( node ) => this.reportContainers( node, this.handlers.onWidgetRemoved ) );
+			mutation.addedNodes.forEach( ( node ) => this.reportWidgets( node, this.handlers.onWidgetAdded ) );
+			mutation.removedNodes.forEach( ( node ) => this.reportWidgets( node, this.handlers.onWidgetRemoved ) );
 		} );
 	}
 
 	/**
-	 * Verifica se o próprio nó (ou algum descendente) é um container de
-	 * Widget HTML, e notifica o callback apropriado para cada ocorrência.
+	 * Verifica se o próprio nó (ou algum descendente) é um Widget HTML e
+	 * notifica o callback com o root editável já resolvido — o mesmo
+	 * elemento que o Editor mantém no cache, funcionando com ou sem a
+	 * `.elementor-widget-container` (ver {@link resolveWidgetRoot}).
 	 *
 	 * @param {Node} node
 	 * @param {(el:Element) => void} callback
 	 */
-	reportContainers( node, callback ) {
+	reportWidgets( node, callback ) {
 		if ( Node.ELEMENT_NODE !== node.nodeType ) {
 			return;
 		}
 
-		if ( node.matches( WIDGET_CONTAINER_SELECTOR ) ) {
-			callback( node );
+		if ( node.matches( WIDGET_SELECTOR ) ) {
+			callback( resolveWidgetRoot( node ) );
 		}
 
-		node.querySelectorAll( WIDGET_CONTAINER_SELECTOR ).forEach( callback );
+		node.querySelectorAll( WIDGET_SELECTOR ).forEach( ( widget ) => callback( resolveWidgetRoot( widget ) ) );
 	}
 }

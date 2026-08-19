@@ -4,7 +4,7 @@ Tags: elementor, html widget, visual editor, page builder
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,9 @@ Sim. Cada widget é identificado pelo seu id estável do Elementor, então o
 conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Changelog ==
+
+= 1.1.3 =
+* Correção importante: o editor agora funciona também nos sites com o "DOM otimizado" do Elementor (Optimized Markup / element caching), onde o Widget HTML é renderizado sem a `.elementor-widget-container`. Antes, nesses sites, o modo de edição ligava mas nenhum elemento ficava selecionável.
 
 = 1.1.2 =
 * Correção: os outlines de seleção (azul no hover, verde ao clicar) voltam a aparecer. As variáveis de cor eram declaradas apenas em `#hve-root`, mas o SelectionManager as aplica nos elementos da página, fora desse container — o `var()` ficava inválido e o outline nunca renderizava.

@@ -14,7 +14,7 @@ import StorageManager from './StorageManager.js';
 import DomWatcher from './DomWatcher.js';
 import Notifications from './Notifications.js';
 import ConfirmDialog from './ConfirmDialog.js';
-import { WIDGET_CONTAINER_SELECTOR } from './constants.js';
+import { WIDGET_SELECTOR, resolveWidgetRoot } from './constants.js';
 
 const PANEL_TABS = [
 	{ id: 'content', label: 'Conteúdo' },
@@ -218,10 +218,11 @@ export default class Editor {
 	 * o DomWatcher decide o que entra/sai do cache.
 	 */
 	markEditableWidgets() {
-		this.editableRootsCache = Array.from( document.querySelectorAll( WIDGET_CONTAINER_SELECTOR ) );
+		this.editableRootsCache = Array.from( document.querySelectorAll( WIDGET_SELECTOR ) )
+			.map( ( widget ) => resolveWidgetRoot( widget ) );
 
-		this.editableRootsCache.forEach( ( container ) => {
-			container.setAttribute( 'data-hve-editable-root', 'true' );
+		this.editableRootsCache.forEach( ( root ) => {
+			root.setAttribute( 'data-hve-editable-root', 'true' );
 		} );
 	}
 
