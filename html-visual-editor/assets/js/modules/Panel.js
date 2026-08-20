@@ -1,4 +1,5 @@
-import DOMInspector from './DOMInspector.js?ver=1.1.7';
+import DOMInspector from './DOMInspector.js?ver=1.1.8';
+import { ICONS } from './Icons.js?ver=1.1.8';
 
 /**
  * Panel — casca genérica do painel lateral com abas.
@@ -95,7 +96,15 @@ export default class Panel {
 			const button = document.createElement( 'button' );
 			button.type = 'button';
 			button.className = 'hve-panel__tab';
-			button.textContent = tab.label;
+
+			if ( tab.icon && ICONS[ tab.icon ] ) {
+				button.innerHTML = ICONS[ tab.icon ];
+			}
+
+			const labelSpan = document.createElement( 'span' );
+			labelSpan.textContent = tab.label;
+			button.appendChild( labelSpan );
+
 			button.addEventListener( 'click', () => this.setActiveTab( tab.id ) );
 
 			this.tabButtons.set( tab.id, button );

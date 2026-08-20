@@ -1,4 +1,4 @@
-import { googleFontParam } from './Fonts.js?ver=1.1.7';
+import { googleFontParam } from './Fonts.js?ver=1.1.8';
 
 /**
  * Consultas de media query usadas para cada breakpoint gerenciado.

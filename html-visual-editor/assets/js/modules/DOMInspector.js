@@ -1,4 +1,4 @@
-import { SUPPORTED_TAGS } from './SupportedElements.js?ver=1.1.7';
+import { SUPPORTED_TAGS } from './SupportedElements.js?ver=1.1.8';
 
 /**
  * DOMInspector — utilitário estático de leitura da árvore DOM.

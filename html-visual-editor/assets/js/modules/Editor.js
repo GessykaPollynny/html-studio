@@ -1,27 +1,27 @@
-import Toolbar from './Toolbar.js?ver=1.1.7';
-import SelectionManager from './SelectionManager.js?ver=1.1.7';
-import Breadcrumb from './Breadcrumb.js?ver=1.1.7';
-import DOMInspector from './DOMInspector.js?ver=1.1.7';
-import Panel from './Panel.js?ver=1.1.7';
-import LayoutTab from './tabs/LayoutTab.js?ver=1.1.7';
-import ResponsiveTab from './tabs/ResponsiveTab.js?ver=1.1.7';
-import ContentTab from './tabs/ContentTab.js?ver=1.1.7';
-import ImagesTab from './tabs/ImagesTab.js?ver=1.1.7';
-import StyleTab from './tabs/StyleTab.js?ver=1.1.7';
-import HistoryManager from './HistoryManager.js?ver=1.1.7';
-import KeyboardShortcuts from './KeyboardShortcuts.js?ver=1.1.7';
-import StorageManager from './StorageManager.js?ver=1.1.7';
-import DomWatcher from './DomWatcher.js?ver=1.1.7';
-import Notifications from './Notifications.js?ver=1.1.7';
-import ConfirmDialog from './ConfirmDialog.js?ver=1.1.7';
-import { WIDGET_SELECTOR, resolveWidgetRoot } from './constants.js?ver=1.1.7';
+import Toolbar from './Toolbar.js?ver=1.1.8';
+import SelectionManager from './SelectionManager.js?ver=1.1.8';
+import Breadcrumb from './Breadcrumb.js?ver=1.1.8';
+import DOMInspector from './DOMInspector.js?ver=1.1.8';
+import Panel from './Panel.js?ver=1.1.8';
+import LayoutTab from './tabs/LayoutTab.js?ver=1.1.8';
+import ResponsiveTab from './tabs/ResponsiveTab.js?ver=1.1.8';
+import ContentTab from './tabs/ContentTab.js?ver=1.1.8';
+import ImagesTab from './tabs/ImagesTab.js?ver=1.1.8';
+import StyleTab from './tabs/StyleTab.js?ver=1.1.8';
+import HistoryManager from './HistoryManager.js?ver=1.1.8';
+import KeyboardShortcuts from './KeyboardShortcuts.js?ver=1.1.8';
+import StorageManager from './StorageManager.js?ver=1.1.8';
+import DomWatcher from './DomWatcher.js?ver=1.1.8';
+import Notifications from './Notifications.js?ver=1.1.8';
+import ConfirmDialog from './ConfirmDialog.js?ver=1.1.8';
+import { WIDGET_SELECTOR, resolveWidgetRoot } from './constants.js?ver=1.1.8';
 
 const PANEL_TABS = [
-	{ id: 'content', label: 'Conteúdo' },
-	{ id: 'images', label: 'Imagens' },
-	{ id: 'style', label: 'Estilo' },
-	{ id: 'layout', label: 'Layout' },
-	{ id: 'responsive', label: 'Responsivo' },
+	{ id: 'content', label: 'Conteúdo', icon: 'content' },
+	{ id: 'images', label: 'Imagens', icon: 'images' },
+	{ id: 'style', label: 'Estilo', icon: 'style' },
+	{ id: 'layout', label: 'Layout', icon: 'layout' },
+	{ id: 'responsive', label: 'Responsivo', icon: 'responsive' },
 ];
 
 /**

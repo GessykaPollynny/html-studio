@@ -4,7 +4,7 @@ Tags: elementor, html widget, visual editor, page builder
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.1.7
+Stable tag: 1.1.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,9 @@ conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Changelog ==
 
+= 1.1.8 =
+* Novo visual: interface do editor com a identidade Usuart (roxo + magenta). Cabeçalho do painel em roxo, ações principais em magenta, ícones nas abas (Conteúdo, Imagens, Estilo, Layout, Responsivo) e no botão "Editar HTML", com transições mais suaves.
+
 = 1.1.7 =
 * Novo: biblioteca de fontes na aba Estilo — selecione a tipografia numa lista (fontes do sistema + Google Fonts populares) em vez de digitar o nome. A Google Font escolhida é carregada automaticamente, tanto na edição quanto no site salvo.
 * Novo: seletor de cor com caixinha visual (escolha qualquer cor no quadradinho) ao lado do campo de texto (para digitar hex, rgb() ou nomes como "transparent"). Os dois ficam sincronizados.
@@ -116,5 +119,5 @@ conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Upgrade Notice ==
 
-= 1.1.7 =
-Biblioteca de fontes (com Google Fonts) e seletor visual de cores na aba Estilo.
+= 1.1.8 =
+Nova identidade visual do editor (cores Usuart) com ícones nas abas.

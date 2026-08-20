@@ -1,3 +1,5 @@
+import { ICONS } from './Icons.js?ver=1.1.8';
+
 /**
  * Toolbar — barra flutuante com o botão de entrada/saída do modo de
  * edição, desfazer/refazer e salvar.
@@ -102,9 +104,17 @@ export default class Toolbar {
 	 * Atualiza o texto do botão conforme o estado atual.
 	 */
 	setLabel() {
-		this.button.textContent = this.isEditing
-			? this.i18n.exitEditMode
-			: this.i18n.editHtml;
+		if ( this.isEditing ) {
+			this.button.textContent = this.i18n.exitEditMode;
+			return;
+		}
+
+		// "Editar HTML" ganha o ícone de lápis; "Sair da edição" fica só texto.
+		this.button.innerHTML = ICONS.content;
+
+		const label = document.createElement( 'span' );
+		label.textContent = this.i18n.editHtml;
+		this.button.appendChild( label );
 	}
 
 	/**

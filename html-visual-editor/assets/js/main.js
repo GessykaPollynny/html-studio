@@ -6,7 +6,7 @@
  * Panel, History, Style, etc.) são conectados aqui progressivamente.
  */
 
-import Editor from './modules/Editor.js?ver=1.1.7';
+import Editor from './modules/Editor.js?ver=1.1.8';
 
 /**
  * Aplicação raiz do editor. Mantida enxuta de propósito: cada

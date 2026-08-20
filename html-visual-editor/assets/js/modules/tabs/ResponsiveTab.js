@@ -1,4 +1,4 @@
-import ResponsiveState from '../ResponsiveState.js?ver=1.1.7';
+import ResponsiveState from '../ResponsiveState.js?ver=1.1.8';
 
 const BREAKPOINTS = [
 	{ id: 'desktop', label: 'Desktop' },
