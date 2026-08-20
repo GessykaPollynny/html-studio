@@ -1,6 +1,6 @@
-import FieldBuilder from '../FieldBuilder.js?ver=1.1.5';
-import StyleManager from '../StyleManager.js?ver=1.1.5';
-import ResponsiveState from '../ResponsiveState.js?ver=1.1.5';
+import FieldBuilder from '../FieldBuilder.js?ver=1.1.6';
+import StyleManager from '../StyleManager.js?ver=1.1.6';
+import ResponsiveState from '../ResponsiveState.js?ver=1.1.6';
 
 const FONT_WEIGHT_OPTIONS = [
 	{ value: '', label: 'Padrão' },
@@ -95,6 +95,38 @@ const BREAKPOINT_LABELS = {
 };
 
 /**
+ * Propriedades que esperam um comprimento e, portanto, precisam de unidade.
+ * `line-height` e `opacity` ficam de fora de propósito: aceitam número puro
+ * (1.5, 0.8) e não devem ganhar `px`.
+ */
+const LENGTH_PROPS = new Set( [
+	'border-radius', 'padding', 'margin', 'gap',
+	'font-size', 'letter-spacing',
+	'width', 'height', 'max-width', 'min-width',
+] );
+
+/**
+ * Completa com `px` quando o usuário digita apenas um número num campo de
+ * comprimento (ex.: "45" → "45px"). Sem isso o valor vira CSS inválido
+ * (`font-size: 45`) e o navegador o ignora — foi o que fazia as mudanças de
+ * tamanho "não alterarem nada". Valores com espaço (ex.: "16px 24px") ou
+ * que já trazem unidade/palavra-chave passam intactos.
+ *
+ * @param {string} prop
+ * @param {string} value
+ * @return {string}
+ */
+export function withUnit( prop, value ) {
+	const trimmed = ( value || '' ).trim();
+
+	if ( LENGTH_PROPS.has( prop ) && /^\d+(\.\d+)?$/.test( trimmed ) ) {
+		return `${ trimmed }px`;
+	}
+
+	return trimmed;
+}
+
+/**
  * StyleTab — aplica estilos ao elemento selecionado através do
  * StyleManager, sempre no breakpoint atualmente ativo em ResponsiveState.
  *
@@ -184,7 +216,7 @@ export default class StyleTab {
 		const currentValue = this.resolveCurrentValue( field.prop, breakpoint );
 
 		const onChange = ( value ) => {
-			StyleManager.setProperty( this.context.element, field.prop, value, breakpoint );
+			StyleManager.setProperty( this.context.element, field.prop, withUnit( field.prop, value ), breakpoint );
 			this.context.notifyChange();
 		};
 

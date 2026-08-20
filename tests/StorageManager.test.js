@@ -140,4 +140,19 @@ describe( 'buildSavableHtml', () => {
 
 		expect( makeStorage().buildSavableHtml( root ) ).not.toContain( '<style' );
 	} );
+
+	test( 'não acumula blocos <style data-hve-managed> de salvamentos anteriores', () => {
+		document.body.innerHTML = `
+			<div class="elementor-widget-container">
+				<style data-hve-managed="true">[data-hve-style-id="antigo"]{color:red !important;}</style>
+				<h2>Título</h2>
+			</div>`;
+
+		const root = document.querySelector( '.elementor-widget-container' );
+		const html = makeStorage().buildSavableHtml( root );
+
+		expect( html ).not.toContain( 'data-hve-style-id="antigo"' );
+		expect( html ).not.toContain( 'data-hve-managed' );
+		expect( html ).toContain( 'Título' );
+	} );
 } );

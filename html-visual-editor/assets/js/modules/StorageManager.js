@@ -1,4 +1,4 @@
-import StyleManager from './StyleManager.js?ver=1.1.5';
+import StyleManager from './StyleManager.js?ver=1.1.6';
 
 /**
  * StorageManager — envia o HTML editado de volta ao servidor.
@@ -85,6 +85,11 @@ export default class StorageManager {
 		const clone = root.cloneNode( true );
 
 		this.stripEditingArtifacts( clone );
+
+		// Remove os blocos de estilo gerenciados por salvamentos anteriores.
+		// Sem isso, cada save prepende um novo `<style data-hve-managed>` sem
+		// tirar o antigo, e eles se acumulam indefinidamente no HTML salvo.
+		clone.querySelectorAll( 'style[data-hve-managed]' ).forEach( ( styleEl ) => styleEl.remove() );
 
 		const styleIds = this.collectStyleIds( root );
 		const css = StyleManager.renderForIds( styleIds );

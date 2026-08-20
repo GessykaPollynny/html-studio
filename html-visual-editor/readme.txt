@@ -4,7 +4,7 @@ Tags: elementor, html widget, visual editor, page builder
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,10 @@ conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Changelog ==
 
+= 1.1.6 =
+* Correção: campos de tamanho na aba Estilo (font-size, width, padding, etc.) agora aceitam número puro — ao digitar "45" o plugin completa para "45px". Antes, um número sem unidade virava CSS inválido e a mudança não aparecia.
+* Correção: os blocos de estilo gerenciados não se acumulam mais a cada salvamento; o antigo é substituído pelo novo.
+
 = 1.1.5 =
 * Correção: as mudanças da aba Estilo (tipografia, cor, tamanho, etc.) agora sobrepõem o CSS do próprio HTML do usuário. Antes, em conteúdos com blocos `<style>` de seletores específicos (comum em landing pages), o estilo do plugin perdia por especificidade e "não alterava nada". Agora as declarações usam `!important`.
 
@@ -108,5 +112,5 @@ conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Upgrade Notice ==
 
-= 1.1.5 =
-A aba Estilo agora sobrepõe o CSS do site (via !important). Atualização recomendada.
+= 1.1.6 =
+Campos de tamanho aceitam número puro (45 → 45px) e estilos não se acumulam. Atualização recomendada.
