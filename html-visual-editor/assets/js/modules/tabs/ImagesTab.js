@@ -1,5 +1,5 @@
-import FieldBuilder from '../FieldBuilder.js?ver=1.1.4';
-import MediaManager from '../MediaManager.js?ver=1.1.4';
+import FieldBuilder from '../FieldBuilder.js?ver=1.1.5';
+import MediaManager from '../MediaManager.js?ver=1.1.5';
 
 /**
  * ImagesTab — origem, dimensões e carregamento de <img>, além do

@@ -188,6 +188,13 @@ class StyleManager {
 	}
 
 	/**
+	 * Cada declaração leva `!important` de propósito. O editor precisa
+	 * sobrepor o CSS que o próprio HTML do usuário traz (landing pages
+	 * costumam ter blocos `<style>` com seletores específicos, ex.
+	 * `.minha-secao h2 { font-size: 40px }`), que de outra forma venceriam
+	 * o seletor de atributo `[data-hve-style-id]` por especificidade — e as
+	 * mudanças de estilo simplesmente não apareceriam.
+	 *
 	 * @param {string} selector
 	 * @param {Object<string,string>} properties
 	 * @return {string}
@@ -199,7 +206,7 @@ class StyleManager {
 			return '';
 		}
 
-		const declarations = entries.map( ( [ prop, value ] ) => `${ prop }: ${ value };` ).join( ' ' );
+		const declarations = entries.map( ( [ prop, value ] ) => `${ prop }: ${ value } !important;` ).join( ' ' );
 
 		return `${ selector } { ${ declarations } }\n`;
 	}

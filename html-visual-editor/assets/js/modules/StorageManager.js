@@ -1,4 +1,4 @@
-import StyleManager from './StyleManager.js?ver=1.1.4';
+import StyleManager from './StyleManager.js?ver=1.1.5';
 
 /**
  * StorageManager — envia o HTML editado de volta ao servidor.

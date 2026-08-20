@@ -1,4 +1,4 @@
-import DOMInspector from './DOMInspector.js?ver=1.1.4';
+import DOMInspector from './DOMInspector.js?ver=1.1.5';
 
 /**
  * Panel — casca genérica do painel lateral com abas.

@@ -1,6 +1,6 @@
-import FieldBuilder from '../FieldBuilder.js?ver=1.1.4';
-import StyleManager from '../StyleManager.js?ver=1.1.4';
-import ResponsiveState from '../ResponsiveState.js?ver=1.1.4';
+import FieldBuilder from '../FieldBuilder.js?ver=1.1.5';
+import StyleManager from '../StyleManager.js?ver=1.1.5';
+import ResponsiveState from '../ResponsiveState.js?ver=1.1.5';
 
 const FONT_WEIGHT_OPTIONS = [
 	{ value: '', label: 'Padrão' },

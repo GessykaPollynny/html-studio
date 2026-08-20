@@ -4,7 +4,7 @@ Tags: elementor, html widget, visual editor, page builder
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,9 @@ conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Changelog ==
 
+= 1.1.5 =
+* Correção: as mudanças da aba Estilo (tipografia, cor, tamanho, etc.) agora sobrepõem o CSS do próprio HTML do usuário. Antes, em conteúdos com blocos `<style>` de seletores específicos (comum em landing pages), o estilo do plugin perdia por especificidade e "não alterava nada". Agora as declarações usam `!important`.
+
 = 1.1.4 =
 * Correção de entrega/cache: cada módulo JS agora carrega com a versão do plugin no `?ver=`. Antes, os imports internos não tinham versão e o navegador continuava rodando o código antigo do cache após uma atualização — exigindo um "hard refresh". Agora as atualizações chegam automaticamente.
 
@@ -105,5 +108,5 @@ conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Upgrade Notice ==
 
-= 1.1.2 =
-Correções de interface (outlines de seleção, painel e cores do editor). Atualização recomendada.
+= 1.1.5 =
+A aba Estilo agora sobrepõe o CSS do site (via !important). Atualização recomendada.
