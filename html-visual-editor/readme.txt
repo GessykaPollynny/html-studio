@@ -4,7 +4,7 @@ Tags: elementor, html widget, visual editor, page builder
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,9 @@ Sim. Cada widget é identificado pelo seu id estável do Elementor, então o
 conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Changelog ==
+
+= 1.1.4 =
+* Correção de entrega/cache: cada módulo JS agora carrega com a versão do plugin no `?ver=`. Antes, os imports internos não tinham versão e o navegador continuava rodando o código antigo do cache após uma atualização — exigindo um "hard refresh". Agora as atualizações chegam automaticamente.
 
 = 1.1.3 =
 * Correção importante: o editor agora funciona também nos sites com o "DOM otimizado" do Elementor (Optimized Markup / element caching), onde o Widget HTML é renderizado sem a `.elementor-widget-container`. Antes, nesses sites, o modo de edição ligava mas nenhum elemento ficava selecionável.

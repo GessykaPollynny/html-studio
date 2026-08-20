@@ -1,4 +1,4 @@
-import DOMInspector from './DOMInspector.js';
+import DOMInspector from './DOMInspector.js?ver=1.1.4';
 
 /**
  * Breadcrumb — barra flutuante com a hierarquia do elemento selecionado.

@@ -1,20 +1,20 @@
-import Toolbar from './Toolbar.js';
-import SelectionManager from './SelectionManager.js';
-import Breadcrumb from './Breadcrumb.js';
-import DOMInspector from './DOMInspector.js';
-import Panel from './Panel.js';
-import LayoutTab from './tabs/LayoutTab.js';
-import ResponsiveTab from './tabs/ResponsiveTab.js';
-import ContentTab from './tabs/ContentTab.js';
-import ImagesTab from './tabs/ImagesTab.js';
-import StyleTab from './tabs/StyleTab.js';
-import HistoryManager from './HistoryManager.js';
-import KeyboardShortcuts from './KeyboardShortcuts.js';
-import StorageManager from './StorageManager.js';
-import DomWatcher from './DomWatcher.js';
-import Notifications from './Notifications.js';
-import ConfirmDialog from './ConfirmDialog.js';
-import { WIDGET_SELECTOR, resolveWidgetRoot } from './constants.js';
+import Toolbar from './Toolbar.js?ver=1.1.4';
+import SelectionManager from './SelectionManager.js?ver=1.1.4';
+import Breadcrumb from './Breadcrumb.js?ver=1.1.4';
+import DOMInspector from './DOMInspector.js?ver=1.1.4';
+import Panel from './Panel.js?ver=1.1.4';
+import LayoutTab from './tabs/LayoutTab.js?ver=1.1.4';
+import ResponsiveTab from './tabs/ResponsiveTab.js?ver=1.1.4';
+import ContentTab from './tabs/ContentTab.js?ver=1.1.4';
+import ImagesTab from './tabs/ImagesTab.js?ver=1.1.4';
+import StyleTab from './tabs/StyleTab.js?ver=1.1.4';
+import HistoryManager from './HistoryManager.js?ver=1.1.4';
+import KeyboardShortcuts from './KeyboardShortcuts.js?ver=1.1.4';
+import StorageManager from './StorageManager.js?ver=1.1.4';
+import DomWatcher from './DomWatcher.js?ver=1.1.4';
+import Notifications from './Notifications.js?ver=1.1.4';
+import ConfirmDialog from './ConfirmDialog.js?ver=1.1.4';
+import { WIDGET_SELECTOR, resolveWidgetRoot } from './constants.js?ver=1.1.4';
 
 const PANEL_TABS = [
 	{ id: 'content', label: 'Conteúdo' },
