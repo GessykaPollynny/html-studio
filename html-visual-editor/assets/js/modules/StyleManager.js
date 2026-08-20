@@ -1,3 +1,5 @@
+import { googleFontParam } from './Fonts.js?ver=1.1.7';
+
 /**
  * Consultas de media query usadas para cada breakpoint gerenciado.
  * `desktop` não usa media query (é o estilo base).
@@ -48,7 +50,37 @@ class StyleManager {
 			bucket[ property ] = value;
 		}
 
+		// Carrega a fonte escolhida para que o preview a mostre de imediato
+		// durante a edição (a persistência vem do @import em renderForIds).
+		if ( 'font-family' === property && value ) {
+			this.ensureGoogleFont( googleFontParam( value ) );
+		}
+
 		this.render();
+	}
+
+	/**
+	 * Injeta, uma única vez, o `<link>` do Google Fonts para a fonte
+	 * escolhida — apenas para a pré-visualização durante a edição.
+	 *
+	 * @param {string|null} param Parâmetro `family` da API, ou null.
+	 */
+	ensureGoogleFont( param ) {
+		if ( ! param ) {
+			return;
+		}
+
+		const id = 'hve-gfont-' + param.replace( /[^a-zA-Z0-9]/g, '' );
+
+		if ( document.getElementById( id ) ) {
+			return;
+		}
+
+		const link = document.createElement( 'link' );
+		link.id = id;
+		link.rel = 'stylesheet';
+		link.href = `https://fonts.googleapis.com/css2?family=${ param }&display=swap`;
+		document.head.appendChild( link );
 	}
 
 	/**
@@ -163,9 +195,13 @@ class StyleManager {
 	 * @return {string}
 	 */
 	renderForIds( ids ) {
+		// Materializa em lista: `ids` pode ser um iterador (rules.keys()),
+		// e precisamos percorrê-lo duas vezes (fontes e regras).
+		const idList = Array.from( ids );
+
 		let css = '';
 
-		for ( const id of ids ) {
+		for ( const id of idList ) {
 			if ( ! this.rules.has( id ) ) {
 				continue;
 			}
@@ -184,10 +220,52 @@ class StyleManager {
 			} );
 		}
 
-		return css;
+		// Os `@import` das Google Fonts precisam vir ANTES de qualquer outra
+		// regra, senão o navegador os ignora — por isso são prefixados aqui.
+		// Assim a fonte persiste no HTML salvo, inclusive para os visitantes.
+		return this.collectFontImports( idList ) + css;
 	}
 
 	/**
+	 * Reúne os `@import` das Google Fonts usadas por um conjunto de ids,
+	 * sem repetir a mesma fonte.
+	 *
+	 * @param {string[]} idList
+	 * @return {string}
+	 */
+	collectFontImports( idList ) {
+		const params = new Set();
+
+		idList.forEach( ( id ) => {
+			if ( ! this.rules.has( id ) ) {
+				return;
+			}
+
+			const breakpoints = this.rules.get( id );
+
+			[ 'desktop', 'tablet', 'mobile' ].forEach( ( name ) => {
+				const family = breakpoints[ name ] && breakpoints[ name ][ 'font-family' ];
+				const param = family ? googleFontParam( family ) : null;
+
+				if ( param ) {
+					params.add( param );
+				}
+			} );
+		} );
+
+		return Array.from( params )
+			.map( ( param ) => `@import url('https://fonts.googleapis.com/css2?family=${ param }&display=swap');\n` )
+			.join( '' );
+	}
+
+	/**
+	 * Cada declaração leva `!important` de propósito. O editor precisa
+	 * sobrepor o CSS que o próprio HTML do usuário traz (landing pages
+	 * costumam ter blocos `<style>` com seletores específicos, ex.
+	 * `.minha-secao h2 { font-size: 40px }`), que de outra forma venceriam
+	 * o seletor de atributo `[data-hve-style-id]` por especificidade — e as
+	 * mudanças de estilo simplesmente não apareceriam.
+	 *
 	 * @param {string} selector
 	 * @param {Object<string,string>} properties
 	 * @return {string}
@@ -199,7 +277,7 @@ class StyleManager {
 			return '';
 		}
 
-		const declarations = entries.map( ( [ prop, value ] ) => `${ prop }: ${ value };` ).join( ' ' );
+		const declarations = entries.map( ( [ prop, value ] ) => `${ prop }: ${ value } !important;` ).join( ' ' );
 
 		return `${ selector } { ${ declarations } }\n`;
 	}

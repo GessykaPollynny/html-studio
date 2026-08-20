@@ -4,7 +4,7 @@ Tags: elementor, html widget, visual editor, page builder
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.1.2
+Stable tag: 1.1.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,23 @@ conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Changelog ==
 
+= 1.1.7 =
+* Novo: biblioteca de fontes na aba Estilo — selecione a tipografia numa lista (fontes do sistema + Google Fonts populares) em vez de digitar o nome. A Google Font escolhida é carregada automaticamente, tanto na edição quanto no site salvo.
+* Novo: seletor de cor com caixinha visual (escolha qualquer cor no quadradinho) ao lado do campo de texto (para digitar hex, rgb() ou nomes como "transparent"). Os dois ficam sincronizados.
+
+= 1.1.6 =
+* Correção: campos de tamanho na aba Estilo (font-size, width, padding, etc.) agora aceitam número puro — ao digitar "45" o plugin completa para "45px". Antes, um número sem unidade virava CSS inválido e a mudança não aparecia.
+* Correção: os blocos de estilo gerenciados não se acumulam mais a cada salvamento; o antigo é substituído pelo novo.
+
+= 1.1.5 =
+* Correção: as mudanças da aba Estilo (tipografia, cor, tamanho, etc.) agora sobrepõem o CSS do próprio HTML do usuário. Antes, em conteúdos com blocos `<style>` de seletores específicos (comum em landing pages), o estilo do plugin perdia por especificidade e "não alterava nada". Agora as declarações usam `!important`.
+
+= 1.1.4 =
+* Correção de entrega/cache: cada módulo JS agora carrega com a versão do plugin no `?ver=`. Antes, os imports internos não tinham versão e o navegador continuava rodando o código antigo do cache após uma atualização — exigindo um "hard refresh". Agora as atualizações chegam automaticamente.
+
+= 1.1.3 =
+* Correção importante: o editor agora funciona também nos sites com o "DOM otimizado" do Elementor (Optimized Markup / element caching), onde o Widget HTML é renderizado sem a `.elementor-widget-container`. Antes, nesses sites, o modo de edição ligava mas nenhum elemento ficava selecionável.
+
 = 1.1.2 =
 * Correção: os outlines de seleção (azul no hover, verde ao clicar) voltam a aparecer. As variáveis de cor eram declaradas apenas em `#hve-root`, mas o SelectionManager as aplica nos elementos da página, fora desse container — o `var()` ficava inválido e o outline nunca renderizava.
 
@@ -99,5 +116,5 @@ conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Upgrade Notice ==
 
-= 1.1.2 =
-Correções de interface (outlines de seleção, painel e cores do editor). Atualização recomendada.
+= 1.1.7 =
+Biblioteca de fontes (com Google Fonts) e seletor visual de cores na aba Estilo.

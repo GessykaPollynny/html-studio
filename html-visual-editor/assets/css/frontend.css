@@ -762,3 +762,26 @@ body.hve-editing .hve-text-editing {
 		animation: none;
 	}
 }
+
+/* Seletor de cor: caixinha visual + campo de texto lado a lado. */
+#hve-root .hve-field__color-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+#hve-root .hve-field__swatch {
+	flex: 0 0 auto;
+	width: 40px;
+	height: 34px;
+	padding: 2px;
+	border: 1px solid var( --hve-color-border );
+	border-radius: var( --hve-radius );
+	background: var( --hve-color-bg );
+	cursor: pointer;
+}
+
+#hve-root .hve-field__color-row .hve-field__input {
+	flex: 1 1 auto;
+	min-width: 0;
+}

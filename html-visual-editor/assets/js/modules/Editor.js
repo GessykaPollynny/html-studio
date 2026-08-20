@@ -1,20 +1,20 @@
-import Toolbar from './Toolbar.js';
-import SelectionManager from './SelectionManager.js';
-import Breadcrumb from './Breadcrumb.js';
-import DOMInspector from './DOMInspector.js';
-import Panel from './Panel.js';
-import LayoutTab from './tabs/LayoutTab.js';
-import ResponsiveTab from './tabs/ResponsiveTab.js';
-import ContentTab from './tabs/ContentTab.js';
-import ImagesTab from './tabs/ImagesTab.js';
-import StyleTab from './tabs/StyleTab.js';
-import HistoryManager from './HistoryManager.js';
-import KeyboardShortcuts from './KeyboardShortcuts.js';
-import StorageManager from './StorageManager.js';
-import DomWatcher from './DomWatcher.js';
-import Notifications from './Notifications.js';
-import ConfirmDialog from './ConfirmDialog.js';
-import { WIDGET_CONTAINER_SELECTOR } from './constants.js';
+import Toolbar from './Toolbar.js?ver=1.1.7';
+import SelectionManager from './SelectionManager.js?ver=1.1.7';
+import Breadcrumb from './Breadcrumb.js?ver=1.1.7';
+import DOMInspector from './DOMInspector.js?ver=1.1.7';
+import Panel from './Panel.js?ver=1.1.7';
+import LayoutTab from './tabs/LayoutTab.js?ver=1.1.7';
+import ResponsiveTab from './tabs/ResponsiveTab.js?ver=1.1.7';
+import ContentTab from './tabs/ContentTab.js?ver=1.1.7';
+import ImagesTab from './tabs/ImagesTab.js?ver=1.1.7';
+import StyleTab from './tabs/StyleTab.js?ver=1.1.7';
+import HistoryManager from './HistoryManager.js?ver=1.1.7';
+import KeyboardShortcuts from './KeyboardShortcuts.js?ver=1.1.7';
+import StorageManager from './StorageManager.js?ver=1.1.7';
+import DomWatcher from './DomWatcher.js?ver=1.1.7';
+import Notifications from './Notifications.js?ver=1.1.7';
+import ConfirmDialog from './ConfirmDialog.js?ver=1.1.7';
+import { WIDGET_SELECTOR, resolveWidgetRoot } from './constants.js?ver=1.1.7';
 
 const PANEL_TABS = [
 	{ id: 'content', label: 'Conteúdo' },
@@ -218,10 +218,11 @@ export default class Editor {
 	 * o DomWatcher decide o que entra/sai do cache.
 	 */
 	markEditableWidgets() {
-		this.editableRootsCache = Array.from( document.querySelectorAll( WIDGET_CONTAINER_SELECTOR ) );
+		this.editableRootsCache = Array.from( document.querySelectorAll( WIDGET_SELECTOR ) )
+			.map( ( widget ) => resolveWidgetRoot( widget ) );
 
-		this.editableRootsCache.forEach( ( container ) => {
-			container.setAttribute( 'data-hve-editable-root', 'true' );
+		this.editableRootsCache.forEach( ( root ) => {
+			root.setAttribute( 'data-hve-editable-root', 'true' );
 		} );
 	}
 

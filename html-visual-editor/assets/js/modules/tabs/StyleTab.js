@@ -1,6 +1,7 @@
-import FieldBuilder from '../FieldBuilder.js';
-import StyleManager from '../StyleManager.js';
-import ResponsiveState from '../ResponsiveState.js';
+import FieldBuilder from '../FieldBuilder.js?ver=1.1.7';
+import StyleManager from '../StyleManager.js?ver=1.1.7';
+import ResponsiveState from '../ResponsiveState.js?ver=1.1.7';
+import { FONT_LIBRARY } from '../Fonts.js?ver=1.1.7';
 
 const FONT_WEIGHT_OPTIONS = [
 	{ value: '', label: 'Padrão' },
@@ -38,8 +39,8 @@ const GROUPS = [
 	{
 		title: 'Cor & Fundo',
 		fields: [
-			{ prop: 'color', label: 'Cor do texto' },
-			{ prop: 'background-color', label: 'Cor de fundo' },
+			{ prop: 'color', label: 'Cor do texto', type: 'color' },
+			{ prop: 'background-color', label: 'Cor de fundo', type: 'color' },
 		],
 	},
 	{
@@ -61,7 +62,7 @@ const GROUPS = [
 	{
 		title: 'Tipografia',
 		fields: [
-			{ prop: 'font-family', label: 'Fonte' },
+			{ prop: 'font-family', label: 'Fonte', type: 'font' },
 			{ prop: 'font-weight', label: 'Peso', type: 'select', options: FONT_WEIGHT_OPTIONS },
 			{ prop: 'font-size', label: 'Tamanho (ex: 16px)' },
 			{ prop: 'line-height', label: 'Line height (ex: 1.5)' },
@@ -93,6 +94,38 @@ const BREAKPOINT_LABELS = {
 	tablet: 'Tablet',
 	mobile: 'Mobile',
 };
+
+/**
+ * Propriedades que esperam um comprimento e, portanto, precisam de unidade.
+ * `line-height` e `opacity` ficam de fora de propósito: aceitam número puro
+ * (1.5, 0.8) e não devem ganhar `px`.
+ */
+const LENGTH_PROPS = new Set( [
+	'border-radius', 'padding', 'margin', 'gap',
+	'font-size', 'letter-spacing',
+	'width', 'height', 'max-width', 'min-width',
+] );
+
+/**
+ * Completa com `px` quando o usuário digita apenas um número num campo de
+ * comprimento (ex.: "45" → "45px"). Sem isso o valor vira CSS inválido
+ * (`font-size: 45`) e o navegador o ignora — foi o que fazia as mudanças de
+ * tamanho "não alterarem nada". Valores com espaço (ex.: "16px 24px") ou
+ * que já trazem unidade/palavra-chave passam intactos.
+ *
+ * @param {string} prop
+ * @param {string} value
+ * @return {string}
+ */
+export function withUnit( prop, value ) {
+	const trimmed = ( value || '' ).trim();
+
+	if ( LENGTH_PROPS.has( prop ) && /^\d+(\.\d+)?$/.test( trimmed ) ) {
+		return `${ trimmed }px`;
+	}
+
+	return trimmed;
+}
 
 /**
  * StyleTab — aplica estilos ao elemento selecionado através do
@@ -184,12 +217,20 @@ export default class StyleTab {
 		const currentValue = this.resolveCurrentValue( field.prop, breakpoint );
 
 		const onChange = ( value ) => {
-			StyleManager.setProperty( this.context.element, field.prop, value, breakpoint );
+			StyleManager.setProperty( this.context.element, field.prop, withUnit( field.prop, value ), breakpoint );
 			this.context.notifyChange();
 		};
 
 		if ( 'select' === field.type ) {
 			return FieldBuilder.select( field.label, field.options, currentValue, onChange );
+		}
+
+		if ( 'font' === field.type ) {
+			return FieldBuilder.fontSelect( field.label, FONT_LIBRARY, currentValue, onChange );
+		}
+
+		if ( 'color' === field.type ) {
+			return FieldBuilder.colorInput( field.label, currentValue, onChange );
 		}
 
 		return FieldBuilder.textInput( field.label, currentValue, onChange );
