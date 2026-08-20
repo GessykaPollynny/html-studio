@@ -1,5 +1,5 @@
-import RichTextToolbar from '../RichTextToolbar.js?ver=1.1.6';
-import FieldBuilder from '../FieldBuilder.js?ver=1.1.6';
+import RichTextToolbar from '../RichTextToolbar.js?ver=1.1.7';
+import FieldBuilder from '../FieldBuilder.js?ver=1.1.7';
 
 /**
  * Tags cujo conteúdo textual é editável via contenteditable + RichTextToolbar.

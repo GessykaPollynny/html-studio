@@ -1,4 +1,4 @@
-import DOMInspector from './DOMInspector.js?ver=1.1.6';
+import DOMInspector from './DOMInspector.js?ver=1.1.7';
 
 const HOVER_OUTLINE = '2px solid var(--hve-color-outline-hover)';
 const SELECTED_OUTLINE = '2px solid var(--hve-color-outline-selected)';

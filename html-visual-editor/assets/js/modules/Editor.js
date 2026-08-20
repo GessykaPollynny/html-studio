@@ -1,20 +1,20 @@
-import Toolbar from './Toolbar.js?ver=1.1.6';
-import SelectionManager from './SelectionManager.js?ver=1.1.6';
-import Breadcrumb from './Breadcrumb.js?ver=1.1.6';
-import DOMInspector from './DOMInspector.js?ver=1.1.6';
-import Panel from './Panel.js?ver=1.1.6';
-import LayoutTab from './tabs/LayoutTab.js?ver=1.1.6';
-import ResponsiveTab from './tabs/ResponsiveTab.js?ver=1.1.6';
-import ContentTab from './tabs/ContentTab.js?ver=1.1.6';
-import ImagesTab from './tabs/ImagesTab.js?ver=1.1.6';
-import StyleTab from './tabs/StyleTab.js?ver=1.1.6';
-import HistoryManager from './HistoryManager.js?ver=1.1.6';
-import KeyboardShortcuts from './KeyboardShortcuts.js?ver=1.1.6';
-import StorageManager from './StorageManager.js?ver=1.1.6';
-import DomWatcher from './DomWatcher.js?ver=1.1.6';
-import Notifications from './Notifications.js?ver=1.1.6';
-import ConfirmDialog from './ConfirmDialog.js?ver=1.1.6';
-import { WIDGET_SELECTOR, resolveWidgetRoot } from './constants.js?ver=1.1.6';
+import Toolbar from './Toolbar.js?ver=1.1.7';
+import SelectionManager from './SelectionManager.js?ver=1.1.7';
+import Breadcrumb from './Breadcrumb.js?ver=1.1.7';
+import DOMInspector from './DOMInspector.js?ver=1.1.7';
+import Panel from './Panel.js?ver=1.1.7';
+import LayoutTab from './tabs/LayoutTab.js?ver=1.1.7';
+import ResponsiveTab from './tabs/ResponsiveTab.js?ver=1.1.7';
+import ContentTab from './tabs/ContentTab.js?ver=1.1.7';
+import ImagesTab from './tabs/ImagesTab.js?ver=1.1.7';
+import StyleTab from './tabs/StyleTab.js?ver=1.1.7';
+import HistoryManager from './HistoryManager.js?ver=1.1.7';
+import KeyboardShortcuts from './KeyboardShortcuts.js?ver=1.1.7';
+import StorageManager from './StorageManager.js?ver=1.1.7';
+import DomWatcher from './DomWatcher.js?ver=1.1.7';
+import Notifications from './Notifications.js?ver=1.1.7';
+import ConfirmDialog from './ConfirmDialog.js?ver=1.1.7';
+import { WIDGET_SELECTOR, resolveWidgetRoot } from './constants.js?ver=1.1.7';
 
 const PANEL_TABS = [
 	{ id: 'content', label: 'Conteúdo' },

@@ -4,7 +4,7 @@ Tags: elementor, html widget, visual editor, page builder
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,10 @@ conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Changelog ==
 
+= 1.1.7 =
+* Novo: biblioteca de fontes na aba Estilo — selecione a tipografia numa lista (fontes do sistema + Google Fonts populares) em vez de digitar o nome. A Google Font escolhida é carregada automaticamente, tanto na edição quanto no site salvo.
+* Novo: seletor de cor com caixinha visual (escolha qualquer cor no quadradinho) ao lado do campo de texto (para digitar hex, rgb() ou nomes como "transparent"). Os dois ficam sincronizados.
+
 = 1.1.6 =
 * Correção: campos de tamanho na aba Estilo (font-size, width, padding, etc.) agora aceitam número puro — ao digitar "45" o plugin completa para "45px". Antes, um número sem unidade virava CSS inválido e a mudança não aparecia.
 * Correção: os blocos de estilo gerenciados não se acumulam mais a cada salvamento; o antigo é substituído pelo novo.
@@ -112,5 +116,5 @@ conteúdo de cada um é salvo no widget correto, sem misturar.
 
 == Upgrade Notice ==
 
-= 1.1.6 =
-Campos de tamanho aceitam número puro (45 → 45px) e estilos não se acumulam. Atualização recomendada.
+= 1.1.7 =
+Biblioteca de fontes (com Google Fonts) e seletor visual de cores na aba Estilo.

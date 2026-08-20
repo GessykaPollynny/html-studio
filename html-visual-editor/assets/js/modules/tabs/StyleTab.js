@@ -1,6 +1,7 @@
-import FieldBuilder from '../FieldBuilder.js?ver=1.1.6';
-import StyleManager from '../StyleManager.js?ver=1.1.6';
-import ResponsiveState from '../ResponsiveState.js?ver=1.1.6';
+import FieldBuilder from '../FieldBuilder.js?ver=1.1.7';
+import StyleManager from '../StyleManager.js?ver=1.1.7';
+import ResponsiveState from '../ResponsiveState.js?ver=1.1.7';
+import { FONT_LIBRARY } from '../Fonts.js?ver=1.1.7';
 
 const FONT_WEIGHT_OPTIONS = [
 	{ value: '', label: 'Padrão' },
@@ -38,8 +39,8 @@ const GROUPS = [
 	{
 		title: 'Cor & Fundo',
 		fields: [
-			{ prop: 'color', label: 'Cor do texto' },
-			{ prop: 'background-color', label: 'Cor de fundo' },
+			{ prop: 'color', label: 'Cor do texto', type: 'color' },
+			{ prop: 'background-color', label: 'Cor de fundo', type: 'color' },
 		],
 	},
 	{
@@ -61,7 +62,7 @@ const GROUPS = [
 	{
 		title: 'Tipografia',
 		fields: [
-			{ prop: 'font-family', label: 'Fonte' },
+			{ prop: 'font-family', label: 'Fonte', type: 'font' },
 			{ prop: 'font-weight', label: 'Peso', type: 'select', options: FONT_WEIGHT_OPTIONS },
 			{ prop: 'font-size', label: 'Tamanho (ex: 16px)' },
 			{ prop: 'line-height', label: 'Line height (ex: 1.5)' },
@@ -222,6 +223,14 @@ export default class StyleTab {
 
 		if ( 'select' === field.type ) {
 			return FieldBuilder.select( field.label, field.options, currentValue, onChange );
+		}
+
+		if ( 'font' === field.type ) {
+			return FieldBuilder.fontSelect( field.label, FONT_LIBRARY, currentValue, onChange );
+		}
+
+		if ( 'color' === field.type ) {
+			return FieldBuilder.colorInput( field.label, currentValue, onChange );
 		}
 
 		return FieldBuilder.textInput( field.label, currentValue, onChange );
