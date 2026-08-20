@@ -1,4 +1,4 @@
-import StyleManager from './StyleManager.js?ver=1.1.7';
+import StyleManager from './StyleManager.js?ver=1.1.8';
 
 const MAX_HISTORY_SIZE = 50;
 const DEBOUNCE_MS = 500;

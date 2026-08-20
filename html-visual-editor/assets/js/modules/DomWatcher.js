@@ -1,4 +1,4 @@
-import { WIDGET_SELECTOR, resolveWidgetRoot } from './constants.js?ver=1.1.7';
+import { WIDGET_SELECTOR, resolveWidgetRoot } from './constants.js?ver=1.1.8';
 
 /**
  * DomWatcher — mantém a lista de Widgets HTML sincronizada com o DOM em

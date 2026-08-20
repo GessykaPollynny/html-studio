@@ -20,23 +20,26 @@
  * herda normalmente, pois `all: initial` não afeta custom properties.
  */
 :root {
-	--hve-color-outline-hover: #3b82f6;
-	--hve-color-outline-selected: #22c55e;
-	--hve-color-editable-hint: #e2e4e8;
+	--hve-color-outline-hover: #7c3aed;
+	--hve-color-outline-selected: #da0864;
+	--hve-color-editable-hint: #e7d9e4;
 }
 
 #hve-root {
+	/* Paleta da marca Usuart: roxo profundo + magenta. */
 	--hve-color-bg: #ffffff;
-	--hve-color-bg-alt: #f5f6f8;
-	--hve-color-border: #e2e4e8;
-	--hve-color-text: #1e1f24;
-	--hve-color-text-muted: #6b7280;
-	--hve-color-primary: #4f46e5;
-	--hve-color-primary-hover: #4338ca;
+	--hve-color-bg-alt: #f8f2f7;
+	--hve-color-border: #ecdbe8;
+	--hve-color-text: #240046;
+	--hve-color-text-muted: #8a7793;
+	--hve-color-primary: #da0864;
+	--hve-color-primary-hover: #b30553;
+	--hve-color-accent: #240046;
+	--hve-color-accent-hover: #3a1560;
 	--hve-color-success: #16a34a;
 	--hve-color-danger: #dc2626;
-	--hve-shadow-panel: 0 10px 30px rgba( 0, 0, 0, 0.15 );
-	--hve-radius: 8px;
+	--hve-shadow-panel: 0 10px 30px rgba( 36, 0, 70, 0.18 );
+	--hve-radius: 10px;
 	--hve-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	--hve-z-index: 999999;
 
@@ -47,11 +50,13 @@
 
 @media ( prefers-color-scheme: dark ) {
 	#hve-root {
-		--hve-color-bg: #1e1f24;
-		--hve-color-bg-alt: #26272e;
-		--hve-color-border: #34353d;
-		--hve-color-text: #f3f4f6;
-		--hve-color-text-muted: #9ca3af;
+		--hve-color-bg: #1c1030;
+		--hve-color-bg-alt: #271640;
+		--hve-color-border: #3a2456;
+		--hve-color-text: #f3ecf7;
+		--hve-color-text-muted: #b199c4;
+		--hve-color-accent: #2e0a52;
+		--hve-color-accent-hover: #3d1a63;
 	}
 }
 
@@ -94,7 +99,7 @@
 	padding: 12px 20px;
 	border: none;
 	border-radius: 999px;
-	background: var( --hve-color-primary );
+	background: var( --hve-color-accent );
 	color: #ffffff;
 	font-family: var( --hve-font );
 	font-size: 14px;
@@ -106,12 +111,17 @@
 }
 
 #hve-root .hve-toolbar__toggle:hover {
-	background: var( --hve-color-primary-hover );
+	background: var( --hve-color-accent-hover );
 	transform: translateY( -1px );
 }
 
 #hve-root .hve-toolbar__toggle--active {
-	background: var( --hve-color-danger );
+	background: var( --hve-color-accent-hover );
+}
+
+#hve-root .hve-toolbar__toggle .hve-icon {
+	width: 17px;
+	height: 17px;
 }
 
 #hve-root .hve-toolbar__history {
@@ -140,14 +150,19 @@
 	padding: 12px 18px;
 	border: none;
 	border-radius: 999px;
-	background: var( --hve-color-success );
+	background: var( --hve-color-primary );
 	color: #ffffff;
 	font-family: var( --hve-font );
 	font-size: 14px;
 	font-weight: 600;
 	cursor: pointer;
 	box-shadow: var( --hve-shadow-panel );
-	transition: background-color 0.15s ease;
+	transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+#hve-root .hve-toolbar__save:hover:not( :disabled ) {
+	background: var( --hve-color-primary-hover );
+	transform: translateY( -1px );
 }
 
 #hve-root .hve-toolbar__save:disabled {
@@ -252,13 +267,13 @@ body.hve-editing [data-hve-editable-root] {
 	align-items: center;
 	justify-content: space-between;
 	padding: 16px;
-	border-bottom: 1px solid var( --hve-color-border );
+	background: var( --hve-color-accent );
 }
 
 #hve-root .hve-panel__title {
 	font-size: 14px;
 	font-weight: 600;
-	color: var( --hve-color-text );
+	color: #ffffff;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -266,18 +281,19 @@ body.hve-editing [data-hve-editable-root] {
 
 #hve-root .hve-panel__close {
 	border: none;
-	background: transparent;
-	color: var( --hve-color-text-muted );
+	background: rgba( 255, 255, 255, 0.12 );
+	color: #ffffff;
 	font-size: 20px;
 	line-height: 1;
 	cursor: pointer;
-	padding: 4px 8px;
-	border-radius: 4px;
+	padding: 4px 10px;
+	border-radius: 6px;
+	transition: background 0.15s ease;
 }
 
 #hve-root .hve-panel__close:hover {
-	background: var( --hve-color-bg-alt );
-	color: var( --hve-color-text );
+	background: rgba( 255, 255, 255, 0.28 );
+	color: #ffffff;
 }
 
 #hve-root .hve-panel__tabs {
@@ -288,18 +304,29 @@ body.hve-editing [data-hve-editable-root] {
 
 #hve-root .hve-panel__tab {
 	flex: 1 1 auto;
-	padding: 10px 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	padding: 10px 6px;
 	border: none;
 	background: transparent;
 	color: var( --hve-color-text-muted );
 	font: inherit;
-	font-size: 12px;
+	font-size: 11px;
 	cursor: pointer;
 	border-bottom: 2px solid transparent;
+	transition: color 0.15s ease, background 0.15s ease;
+}
+
+#hve-root .hve-panel__tab .hve-icon {
+	width: 18px;
+	height: 18px;
 }
 
 #hve-root .hve-panel__tab:hover {
 	color: var( --hve-color-text );
+	background: var( --hve-color-bg-alt );
 }
 
 #hve-root .hve-panel__tab--active {
